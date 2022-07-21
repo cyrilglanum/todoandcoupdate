@@ -24,7 +24,18 @@ class UserController extends AbstractController
     public function listAction(ManagerRegistry $doctrine)
     {
         $users = $doctrine->getRepository(User::class)->findAll();
-        dd($users);
+
+        return $this->render('user/list.html.twig', ['users' =>
+        $users]);
+    }
+
+    /**
+     * @Route("/user/edit/{id}", name="user_edit")
+     */
+    public function editAction(ManagerRegistry $doctrine)
+    {
+        dd("editUser");
+        $users = $doctrine->getRepository(User::class)->findAll();
 
         return $this->render('user/list.html.twig', ['users' =>
         $users]);

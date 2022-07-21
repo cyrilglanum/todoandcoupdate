@@ -20,7 +20,7 @@ class TaskType extends AbstractType
                 "attr" => [
                     'class' => 'col-12 mb-3'
                 ],
-//                'data' => $options['data']['user_id']
+//                'data' => $options
             ]);
     }
 

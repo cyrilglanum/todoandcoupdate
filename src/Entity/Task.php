@@ -30,6 +30,11 @@ class Task
     /**
      * @ORM\Column(type="string", length=255)
      */
+    private $author;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
     private $content;
 
     /**
@@ -50,6 +55,18 @@ class Task
     public function setCreatedAt(\DateTimeImmutable $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getAuthor(): ?string
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(string $author): self
+    {
+        $this->author = $author;
 
         return $this;
     }
@@ -78,15 +95,14 @@ class Task
         return $this;
     }
 
-    public function isIsDone(): ?bool
+    public function isDone(): self
     {
         return $this->isDone;
     }
 
-    public function setIsDone(bool $isDone): self
-    {
-        $this->isDone = $isDone;
 
-        return $this;
+    public function toggle($flag): void
+    {
+        $this->isDone = $flag;
     }
 }

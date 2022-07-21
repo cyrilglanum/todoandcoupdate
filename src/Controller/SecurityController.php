@@ -2,19 +2,28 @@
 
 namespace App\Controller;
 
-use Symfony\Bridge\Doctrine\ManagerRegistry;
+use App\Entity\User;
+use App\Form\UserType;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
     /**
      * @Route("/loginCheck", name="login_check")
      */
-    public function loginCheck()
+    public function loginCheck(AuthenticationUtils $authenticationUtils)
     {
-        dd('loginCheck');
+                dd($authenticationUtils);
+
+        // get the login error if there is one
+        $error = $authenticationUtils->getLastAuthenticationError();
+        // last username entered by the user
+        $lastUsername = $authenticationUtils->getLastUsername();
     }
 
     /**
@@ -28,9 +37,27 @@ class SecurityController extends AbstractController
     /**
      * @Route("/create/user", name="user_create")
      */
-    public function createUser(): Response
+    public function createAction(Request $request, ManagerRegistry $doctrine, UserPasswordHasherInterface $passwordHasherConfig)
     {
-        dd('creation user');
+        $user = new User();
+        $form = $this->createForm(UserType::class, $user);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $doctrine->getManager();
+            $password = $passwordHasherConfig->hashPassword($user, $user->getPassword());
+            $user->setPassword($password);
+
+            $em->persist($user);
+            $em->flush();
+
+            $this->addFlash('success', "L'utilisateur a bien été ajouté.");
+
+            return $this->redirectToRoute('user_list');
+        }
+
+        return $this->render('user/create.html.twig', ['form' => $form->createView()]);
     }
 
 
