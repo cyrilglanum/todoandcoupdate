@@ -6,8 +6,10 @@
 {% block body %}
     <div class="row">
         {{ form_start(form, {'action' : path('user_edit', {'id' : user.id})}) }}
-        {{ form_widget(form) }}
-
+        <div class="col-md-6 form">Username </div>
+           <div class="col-md-6 form form-answer">{{ form_widget(form.username) }} </div>
+           <div class="col-md-6 form">Roles </div>
+           <div class="col-md-6 form">{{ form_widget(form.roles) }} </div>
         <button type="submit" class="btn btn-success pull-right">Modifier</button>
         {{ form_end(form) }}
     </div>

@@ -3,11 +3,27 @@
 {% block body %}
     <div class="row">
         {{ form_start(form, {'action' : path('task_create')}) }}
-            {{ form_widget(form) }}
-{#            {{ form_row(form.author) }}#}
-            <button type="submit" class="btn btn-success pull-right">Ajouter</button>
+        <div class="col-md-6 form">Titre de la tâche</div>
+        <div class="col-md-6 form form-answer">{{ form_widget(form.title) }} </div>
+        <div class="col-md-6 form">Contenu</div>
+        <div class="col-md-6 form form-answer">{{ form_widget(form.content) }} </div>
+        <button type="submit" class="btn btn-success pull-right">Ajouter</button>
         {{ form_end(form) }}
 
         <a href="{{ path('task_list') }}" class="btn btn-primary">Retour à la liste des tâches</a>
     </div>
+
+    <style>
+        .form {
+            margin-bottom: 10px;
+        }
+
+        .form-answer input {
+            border-radius: 6px
+        }
+
+        #task_content {
+            border-radius: 6px
+        }
+    </style>
 {% endblock %}

@@ -35,6 +35,9 @@ class TaskController extends AbstractController
      */
     public function taskCreate(Request $request, ManagerRegistry $doctrine)
     {
+        if ($this->getUser() === null) {
+            return $this->redirectToRoute('app_login');
+        }
         $task = new Task();
         $form = $this->createForm(TaskType::class, $task);
 
@@ -50,7 +53,7 @@ class TaskController extends AbstractController
             $task->setTitle($request->request->get('task')['title']);
             $task->setContent($request->request->get('task')['content']);
             $task->setCreatedAt(new \DateTimeImmutable('now'));
-            $task->setIsDone(0);
+            $task->setIsDone(false);
 
             $em->persist($task);
             $em->flush();
@@ -66,7 +69,7 @@ class TaskController extends AbstractController
     /**
      * @Route("/task_list", name="task_list")
      */
-    public function taskList(Request $request, ManagerRegistry $doctrine)
+    public function taskList(ManagerRegistry $doctrine)
     {
         $tasks = $doctrine->getRepository(Task::class)->findAll();
 
@@ -76,14 +79,19 @@ class TaskController extends AbstractController
     /**
      * @Route("/tasks/{id}/edit", name="task_edit")
      */
-    public function taskEdit(Request $request, ManagerRegistry $doctrine)
+    public function taskEdit(Request $request, ManagerRegistry $doctrine,Task $id)
     {
-        $form = $this->createForm(TaskType::class, $task);
+
+        $form = $this->createForm(TaskType::class, $id);
 
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $id->setTitle($request->request->get('task')['title']);
+            $id->setContent($request->request->get('task')['content']);
+            $id->setCreatedAt(new \DateTimeImmutable('now'));
+
+            $doctrine->getManager()->flush();
 
             $this->addFlash('success', 'La tâche a bien été modifiée.');
 
@@ -92,22 +100,24 @@ class TaskController extends AbstractController
 
         return $this->render('task/edit.html.twig', [
             'form' => $form->createView(),
-            'task' => $task,
+            'task' => $id,
         ]);
     }
 
     /**
      * @Route("/tasks/{id}/toggle", name="task_toggle")
      */
-    public function toggleTaskAction(Request $request, ManagerRegistry $doctrine, Task $id)
+    public function toggleTaskAction(ManagerRegistry $doctrine, Task $id)
     {
-        $em = $doctrine->getManager();
-
         $id->toggle(!$id->isDone());
-        $this->getDoctrine()->getManager()->flush();
 
-        $this->addFlash('success', sprintf('La tâche %s a bien été marquée comme faite.', $task->getTitle()));
-        dd("taskToggle");
+        $doctrine->getManager()->flush();
+
+        if ($id->isDone() === true) {
+            $this->addFlash('success', sprintf('La tâche %s a bien été marquée comme faite.', $id->getTitle()));
+        } else {
+            $this->addFlash('success', sprintf('La tâche %s a bien été marquée comme non terminée.', $id->getTitle()));
+        }
 
         return $this->redirectToRoute('task_list');
     }
@@ -115,7 +125,7 @@ class TaskController extends AbstractController
     /**
      * @Route("/tasks/{id}/delete", name="task_delete")
      */
-    public function deleteTaskAction(Request $request, ManagerRegistry $doctrine, Task $id)
+    public function deleteTaskAction(ManagerRegistry $doctrine, Task $id)
     {
         $em = $doctrine->getManager();
         $em->remove($id);
@@ -124,6 +134,18 @@ class TaskController extends AbstractController
         $this->addFlash('success', 'La tâche a bien été supprimée.');
 
         return $this->redirectToRoute('task_list');
+    }
+
+    /**
+     * @Route("/tasks/done", name="task_done")
+     */
+    public function doneTaskAction(ManagerRegistry $doctrine)
+    {
+        $tasks = $doctrine->getManager()->getRepository(Task::class)->findBy(['isDone' => true]);
+
+        return $this->render('task/list.html.twig', [
+            'tasks' => $tasks,
+        ]);
     }
 
 }

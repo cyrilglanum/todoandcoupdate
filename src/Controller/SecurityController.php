@@ -48,6 +48,7 @@ class SecurityController extends AbstractController
             $em = $doctrine->getManager();
             $password = $passwordHasherConfig->hashPassword($user, $user->getPassword());
             $user->setPassword($password);
+            $user->setRoles((array)($request->request->get('user')['roles']));
 
             $em->persist($user);
             $em->flush();
