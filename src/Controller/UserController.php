@@ -27,6 +27,15 @@ class UserController extends AbstractController
      */
     public function listAction(Request $request, ManagerRegistry $doctrine)
     {
+        $user = $this->getUser();
+
+        if($user === null){
+            return $this->redirectToRoute('app_home');
+        }
+
+        if($user){
+            $roles = $this->getUser()->getRoles();
+        }
 
         $users = $doctrine->getRepository(User::class)->findAll();
 

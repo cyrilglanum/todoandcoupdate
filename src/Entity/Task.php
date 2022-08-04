@@ -30,7 +30,7 @@ class Task
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $author;
+    private $author_id;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -59,14 +59,14 @@ class Task
         return $this;
     }
 
-    public function getAuthor(): ?string
+    public function getAuthor(): ?int
     {
-        return $this->author;
+        return $this->author_id;
     }
 
-    public function setAuthor(string $author): self
+    public function setAuthor(int $author_id): self
     {
-        $this->author = $author;
+        $this->author_id = $author_id;
 
         return $this;
     }

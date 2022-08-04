@@ -48,7 +48,7 @@ class TaskController extends AbstractController
             $task = new Task();
 
             if ($form->getData()->getAuthor() === null) {
-                $task->setAuthor($this->getUser()->getId());
+                $task->setAuthorId($this->getUser()->getId());
             }
             $task->setTitle($request->request->get('task')['title']);
             $task->setContent($request->request->get('task')['content']);
@@ -60,7 +60,7 @@ class TaskController extends AbstractController
 
             $this->addFlash('success', 'La tâche a été bien été ajoutée.');
 
-            return $this->redirectToRoute('task_list');
+            return $this->redirectToRoute('task_list', ['user' => $this->getUser()]);
         }
 
         return $this->render('task/create.html.twig', ['form' => $form->createView()]);
@@ -73,7 +73,7 @@ class TaskController extends AbstractController
     {
         $tasks = $doctrine->getRepository(Task::class)->findAll();
 
-        return $this->render('task/list.html.twig', ['tasks' => $tasks]);
+        return $this->render('task/list.html.twig', ['tasks' => $tasks, 'user' => $this->getUser()]);
     }
 
     /**

@@ -18,8 +18,6 @@ class SecurityController extends AbstractController
      */
     public function loginCheck(AuthenticationUtils $authenticationUtils)
     {
-                dd($authenticationUtils);
-
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user
@@ -27,11 +25,12 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/logout", name="logout")
+     * @Route("/logout", name="app_logout", methods={"GET"})
      */
-    public function logoutCheck()
+    public function logout(): void
     {
-        dd('logoutCheck');
+        // controller can be blank: it will never be called!
+        throw new \Exception('Don\'t forget to activate logout in security.yaml');
     }
 
     /**

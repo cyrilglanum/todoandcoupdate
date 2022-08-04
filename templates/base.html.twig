@@ -10,6 +10,13 @@
 
     <title>To Do List app</title>
 
+{#    <pre>#}
+{#    {{ dump(this.user) }}#}
+{#</pre>#}
+{#    {% if user.role %}#}
+{#        <a href="{{ url('user_list') }}"#}
+{#    {% endif %}#}
+
     <!-- Bootstrap Core CSS -->
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
 
@@ -51,11 +58,16 @@
         <a href="{{ path('user_create') }}" class="btn btn-primary" style="margin-bottom: 50px">Créer un utilisateur</a>
 
         {% if app.user %}
-            <a href="{{ path('logout') }}" class="pull-right btn btn-danger">Se déconnecter</a>
+            {% for role in app.user.roles %}
+                {% if(role is same as 'ROLE_ADMIN') %}
+                <a href="{{ path('app_logout') }}" class="pull-right btn btn-info" style="margin-bottom: 50px; margin-left: 20px">Se déconnecter</a>
+                {% endif %}
+            {% endfor %}
+            <a href="{{ path('user_list') }}" class="pull-right btn btn-danger" style="margin-bottom: 50px">Espace admin</a>
         {% endif %}
 
         {% if not app.user and 'login' != app.request.attributes.get('_route') %}
-            <a href="{{ path('app_login') }}" class="btn btn-success">Se connecter</a>
+            <a href="{{ path('app_login') }}" class="btn btn-success" style="margin-bottom: 50px">Se connecter</a>
         {% endif %}
     </div>
 
@@ -102,7 +114,7 @@
 
 </div>
 
-{#<script src="{{ asset('js/jquery.js') }}"></script>#}
-{#<script src="{{ asset('js/bootstrap.min.js') }}"></script>#}
+{# <script src="{{ asset('js/jquery.js') }}"></script> #}
+{# <script src="{{ asset('js/bootstrap.min.js') }}"></script> #}
 </body>
 </html>
