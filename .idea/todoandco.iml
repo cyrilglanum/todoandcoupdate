@@ -121,6 +121,18 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/doctrine/data-fixtures" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/doctrine/doctrine-fixtures-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/liip/test-fixtures-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/dama/doctrine-test-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/translation" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/behat/behat" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/behat/gherkin" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/behat/transliterator" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/behat/mink" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/friends-of-behat/mink-browserkit-driver" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/friends-of-behat/mink-extension" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/friends-of-behat/symfony-extension" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/dbrekelmans/bdi" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/instaclick/php-webdriver" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/behat/mink-selenium2-driver" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

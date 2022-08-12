@@ -7,6 +7,7 @@
         "php": ">=7.2.5",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "behat/mink-selenium2-driver": "^1.6",
         "doctrine/annotations": "^1.13",
         "doctrine/doctrine-bundle": "^2.7",
         "doctrine/doctrine-migrations-bundle": "^3.2",
@@ -28,7 +29,13 @@
         "symfony/yaml": "5.4.*"
     },
     "require-dev": {
+        "behat/behat": "^3.11",
+        "dama/doctrine-test-bundle": "^7.1",
+        "dbrekelmans/bdi": "^1.0",
         "doctrine/doctrine-fixtures-bundle": "^3.4",
+        "friends-of-behat/mink-browserkit-driver": "^1.6",
+        "friends-of-behat/mink-extension": "^2.7",
+        "friends-of-behat/symfony-extension": "^2.3",
         "liip/test-fixtures-bundle": "^1.0.0",
         "phpunit/phpunit": "^9.5",
         "symfony/browser-kit": "5.4.*",
