@@ -133,6 +133,7 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/dbrekelmans/bdi" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/instaclick/php-webdriver" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/behat/mink-selenium2-driver" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/validator" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

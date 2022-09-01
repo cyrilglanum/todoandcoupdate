@@ -23,34 +23,35 @@
                             {% if user is not null %}
                             <button class="btn btn-success btn-sm pull-right"
                                     style="margin-top : 20px;margin-bottom : 20px">
-
-                                    {% if not task.isDone %}
-                                        Marquer comme faite
-                                    {% else %}
-                                        Marquer non terminée
-                                    {% endif %}
+                                {% if not task.isDone %}
+                                    Marquer comme faite
+                                {% else %}
+                                    Marquer non terminée
+                                {% endif %}
                                 {% endif %}
                             </button>
                         </form>
-                        {% if user is not null %}
-                            {% if task.author != 6 %}
-                                {% if user.id == task.author %}
-                                    <form action="{{ path('task_delete', {'id' : task.id }) }}">
-                                        <button class="btn btn-danger btn-sm pull-right"
-                                                style="margin-bottom : 50px; margin-right : 15px; margin-top : 20px">
-                                            Supprimer
-                                        </button>
-                                    </form>
-                                {% endif %}
-                            {% else %}
-                                {% if user is not null %}
-                                    {% if 'ROLE_ADMIN' in user.roles %}
+                        {% if user is defined %}
+                            {% if user is not null %}
+                                {% if task.author != 6 %}
+                                    {% if user.id == task.author %}
                                         <form action="{{ path('task_delete', {'id' : task.id }) }}">
                                             <button class="btn btn-danger btn-sm pull-right"
                                                     style="margin-bottom : 50px; margin-right : 15px; margin-top : 20px">
                                                 Supprimer
                                             </button>
                                         </form>
+                                    {% endif %}
+                                {% else %}
+                                    {% if user is not null %}
+                                        {% if 'ROLE_ADMIN' in user.roles %}
+                                            <form action="{{ path('task_delete', {'id' : task.id }) }}">
+                                                <button class="btn btn-danger btn-sm pull-right"
+                                                        style="margin-bottom : 50px; margin-right : 15px; margin-top : 20px">
+                                                    Supprimer
+                                                </button>
+                                            </form>
+                                        {% endif %}
                                     {% endif %}
                                 {% endif %}
                             {% endif %}

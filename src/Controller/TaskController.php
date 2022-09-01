@@ -48,7 +48,7 @@ class TaskController extends AbstractController
             $task = new Task();
 
             if ($form->getData()->getAuthor() === null) {
-                $task->setAuthorId($this->getUser()->getId());
+                $task->setAuthor($this->getUser()->getId());
             }
             $task->setTitle($request->request->get('task')['title']);
             $task->setContent($request->request->get('task')['content']);
@@ -142,9 +142,11 @@ class TaskController extends AbstractController
     public function doneTaskAction(ManagerRegistry $doctrine)
     {
         $tasks = $doctrine->getManager()->getRepository(Task::class)->findBy(['isDone' => true]);
+        $user = $this->getUser();
 
         return $this->render('task/list.html.twig', [
             'tasks' => $tasks,
+            'user' => $user,
         ]);
     }
 

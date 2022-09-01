@@ -116,4 +116,14 @@ class Task
     {
         $this->isDone = $flag;
     }
+
+//    public function getUser()
+//    {
+//        $user = User::class->find($this->author_id);
+//        if ($user) {
+//            return $user;
+//        }
+//
+//        return null;
+//    }
 }
