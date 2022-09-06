@@ -3,20 +3,66 @@
 namespace App\Tests\Entity;
 
 use App\Entity\Task;
-use App\Entity\User;
-use App\Repository\UserRepository;
-use Doctrine\Persistence\ManagerRegistry;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Validator\ConstraintViolationList;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class TaskEntityTest extends TestCase
+class TaskEntityTest extends KernelTestCase
 {
+
+    public function getEntity()
+    {
+        $task = new Task();
+
+        $task->setContent('$content');
+        $task->setAuthor(1);
+        $task->setTitle("1 titre parmi d autres");
+        $task->setIsDone(0);
+        $task->setCreatedAt(new \DateTimeImmutable());
+
+        return $task;
+    }
+    public function testValidEntity()
+    {
+        $task = $this->getEntity();
+        self::bootKernel();
+
+        $error = self::$container->get('validator')->validate($task);
+        $this->assertCount(0, $error);
+    }
+
+    public function testInvalidEntity()
+    {
+        $task = $this->getEntity()->setAuthor('testInvalid');
+        self::bootKernel();
+
+        $error = self::$container->get('validator')->validate($task);
+        $this->assertCount(1, $error);
+    }
+
+    public function testInvalidBlankAuthorEntity()
+    {
+        $task = $this->getEntity()->setAuthor('');
+        self::bootKernel();
+
+        $error = self::$container->get('validator')->validate($task);
+        $this->assertCount(1, $error);
+    }
+
+    public function testInvalidBlankTitleEntity()
+    {
+        $task = $this->getEntity()->setTitle('');
+        self::bootKernel();
+
+        $error = self::$container->get('validator')->validate($task);
+        $this->assertCount(1, $error);
+    }
+
     public function testGetId()
     {
         $task = new Task();
 
         static::assertEquals(null, $task->getId());
+        static::assertInstanceOf(Task::class, $task);
     }
 
     public function testGetSetContent()
@@ -26,6 +72,7 @@ class TaskEntityTest extends TestCase
 
         $task->setContent($content);
         $this->assertEquals("Contenu de test", $task->getContent());
+        $this->assertInstanceOf(Task::class, $task);
     }
 
     public function testGetSetTitle(): void
@@ -47,7 +94,7 @@ class TaskEntityTest extends TestCase
         $task = new Task();
         $user_id = 6;
         $task->setAuthor($user_id);
-        static::assertIsInt($user_id,"actual value is Integer or not");
+        static::assertIsInt($user_id, "actual value is Integer or not");
     }
 
     public function testIsDoneToggle()
@@ -56,6 +103,28 @@ class TaskEntityTest extends TestCase
         $task->toggle(true);
         static::assertEquals(true, $task->isDone());
     }
+
+
+    public function testGetUserFromTask(): void
+    {
+        $task = new Task();
+        $user_id = 7;
+
+        $task->setAuthor($user_id);
+
+        self::assertEquals($user_id, $task->getAuthor());
+    }
+
+//    public function testGetSetNullContent()
+//    {
+//        $task = new Task();
+//        $content = null;
+//        $task->setContent($content);
+//
+//        $this->expectError();
+//
+////        $this->assertEquals($content, $task->getContent());
+//    }
 
 
 }

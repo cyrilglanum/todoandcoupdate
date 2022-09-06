@@ -3,6 +3,7 @@
 namespace App\Tests\Entity;
 
 use App\DataFixtures\UserFixtures;
+use App\Entity\Task;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Doctrine\DBAL\Exception\ConstraintViolationException;
@@ -21,12 +22,14 @@ class UserEntityTest extends KernelTestCase
     private const VALID_EMAIL_VALUE = "atchoum-du-974@gmail.com";
     private const VALID_PASSWORD_VALUE = "Atchoum-du-974";
 
-    private  $validator;
+    private $validator;
 
-//    public function setUp(): void
-//    {
-//        $this->validator = self::bootKernel()->getContainer()->get('validator');
-//    }
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->user = new User();
+    }
 //
 //    public function testUserEntityIsValid(): void
 //    {
@@ -47,6 +50,20 @@ class UserEntityTest extends KernelTestCase
 //        return $errors;
 //    }
 
+    public function testValidEntity()
+    {
+        $task = new User();
+
+        $task->setEmail('test@glanum.com');
+        $task->setUsername('flaski');
+        $task->setRoles(["ROLE_USER"]);
+        $task->setPassword('password');
+        self::bootKernel();
+
+        $error = self::$container->get('validator')->validate($task);
+        $this->assertCount(0, $error);
+    }
+
     public function testGetSetUser()
     {
         $task = new User();
@@ -55,6 +72,42 @@ class UserEntityTest extends KernelTestCase
         $task->setEmail($content);
         $this->assertEquals("cyrilg@gmail.com", $task->getEmail());
     }
+
+    public function testGetRoles(): void
+    {
+        $value = ['ROLE_ADMIN'];
+
+        $response = $this->user->setRoles($value);
+
+        self::assertInstanceOf(User::class, $response);
+        self::assertContains('ROLE_USER', $this->user->getRoles());
+
+    }
+
+    public function testGetPassword(): void
+    {
+        $value = 'password';
+
+        $response = $this->user->setPassword($value);
+
+        self::assertInstanceOf(User::class, $response);
+        self::assertEquals($value, $this->user->getPassword());
+
+    }
+
+//    public function testGetTask():void
+//    {
+//        $value = new Task();
+//
+////        $response = $this->user->addTask($task);
+//
+//        dd($this->user->getTasks());
+//        if($this->user->getTasks())
+//
+//        self::assertInstanceOf(User::class, $response);
+//        self::assertContains($value, $this->user->getPassword());
+//
+//    }
 
 
 }

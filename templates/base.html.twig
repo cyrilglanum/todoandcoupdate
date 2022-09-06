@@ -10,12 +10,12 @@
 
     <title>To Do List app</title>
 
-{#    <pre>#}
-{#    {{ dump(this.user) }}#}
-{#</pre>#}
-{#    {% if user.role %}#}
-{#        <a href="{{ url('user_list') }}"#}
-{#    {% endif %}#}
+    {#    <pre> #}
+    {#    {{ dump(this.user) }} #}
+    {# </pre> #}
+    {#    {% if user.role %} #}
+    {#        <a href="{{ url('user_list') }}" #}
+    {#    {% endif %} #}
 
     <!-- Bootstrap Core CSS -->
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
@@ -55,15 +55,23 @@
 <!-- Page Content -->
 <div class="container">
     <div class="row">
-        <a href="{{ path('user_create') }}" class="btn btn-primary" style="margin-bottom: 50px">Créer un utilisateur</a>
-
         {% if app.user %}
             {% for role in app.user.roles %}
                 {% if(role is same as 'ROLE_ADMIN') %}
-                <a href="{{ path('app_logout') }}" class="pull-right btn btn-info" style="margin-bottom: 50px; margin-left: 20px">Se déconnecter</a>
+                    <a href="{{ path('user_create') }}" class="btn btn-primary" style="margin-bottom: 50px">Créer un
+                        utilisateur</a>
                 {% endif %}
             {% endfor %}
-            <a href="{{ path('user_list') }}" class="pull-right btn btn-danger" style="margin-bottom: 50px">Espace admin</a>
+        {% endif %}
+        {% if app.user %}
+            {% for role in app.user.roles %}
+                {% if(role is same as 'ROLE_ADMIN') %}
+                    <a href="{{ path('app_logout') }}" class="pull-right btn btn-info"
+                       style="margin-bottom: 50px; margin-left: 20px">Se déconnecter</a>
+                {% endif %}
+            {% endfor %}
+            <a href="{{ path('user_list') }}" class="pull-right btn btn-danger" style="margin-bottom: 50px">Espace
+                admin</a>
         {% endif %}
 
         {% if not app.user and 'login' != app.request.attributes.get('_route') %}

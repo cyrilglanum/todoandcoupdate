@@ -3,9 +3,12 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -21,11 +24,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Assert\NotBlank(message="Vous devez saisir un nom d'utilisateur.")
      */
     private $username;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Assert\NotBlank(message="Vous devez saisir une adresse email.")
      */
     private $email;
 
@@ -45,6 +50,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->id;
     }
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Task", mappedBy="user", orphanRemoval=true)
+     */
+    private $tasks;
 
     /**
      * @deprecated since Symfony 5.3, use getUserIdentifier instead
@@ -90,6 +100,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function __construct()
+    {
+        $this->tasks = new ArrayCollection();
+    }
+
     /**
      * @return string the hashed password for this user
      */
@@ -113,6 +128,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEmail($email)
     {
         $this->email = $email;
+    }
+
+    public function getTasks(ManagerRegistry $doctrine)
+    {
+        return $this->tasks;
+    }
+
+    public function addTask(Task $task): self
+    {
+        if (!$this->tasks->contains($task)) {
+            $this->tasks[] = $task;
+            $task->setAuthor($this->getId());
+        }
+
+        return $this;
+    }
+
+    public function removeTask(Task $task): self
+    {
+        if ($this->tasks->contains($task)) {
+            $this->tasks->removeElement($task);
+            if ($task->getAuthor() === $this->getId()) {
+                $task->setUser(null);
+            }
+        }
+
+        return $this;
     }
 
     /**

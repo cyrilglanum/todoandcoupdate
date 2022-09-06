@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\TaskRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\Regex;
 
 /**
  * @ORM\Entity(repositoryClass=TaskRepository::class)
@@ -19,16 +21,20 @@ class Task
 
     /**
      * @ORM\Column(type="datetime_immutable")
+     * @Assert\NotBlank()
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $title;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="integer", length=12)
+     * @Assert\NotBlank()
+     * @Regex("/\d+/")
      */
     private $author_id;
 
@@ -59,12 +65,12 @@ class Task
         return $this;
     }
 
-    public function getAuthor(): ?int
+    public function getAuthor()
     {
         return $this->author_id;
     }
 
-    public function setAuthor(int $author_id): self
+    public function setAuthor($author_id): self
     {
         $this->author_id = $author_id;
 
@@ -126,4 +132,5 @@ class Task
 //
 //        return null;
 //    }
+
 }

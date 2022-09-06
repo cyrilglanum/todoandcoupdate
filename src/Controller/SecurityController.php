@@ -39,6 +39,15 @@ class SecurityController extends AbstractController
     public function createAction(Request $request, ManagerRegistry $doctrine, UserPasswordHasherInterface $passwordHasherConfig)
     {
         $user = new User();
+
+        if(!$this->getUser()){
+            return $this->redirect('/login');
+        }
+
+        if (!in_array('ROLE_AuuDMIN', $this->getUser()->getRoles(), true)) {
+            return $this->redirect('/');
+        }
+
         $form = $this->createForm(UserType::class, $user);
 
         $form->handleRequest($request);
