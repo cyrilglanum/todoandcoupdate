@@ -16,7 +16,7 @@ class UserFixtures extends Fixture
             $user->setUsername("User$i");
             $user->setEmail("email$i@test.com");
             $user->setRoles(["ROLE_USER"]);
-            $user->setPassword(hash('md5',"aaa".$i."a"));
+            $user->setPassword(hash('md5',"aaaa"));
             $manager->persist($user);
 
             $manager->flush();

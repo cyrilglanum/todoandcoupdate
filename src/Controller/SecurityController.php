@@ -13,16 +13,16 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
-    /**
-     * @Route("/loginCheck", name="login_check")
-     */
-    public function loginCheck(AuthenticationUtils $authenticationUtils)
-    {
-        // get the login error if there is one
-        $error = $authenticationUtils->getLastAuthenticationError();
-        // last username entered by the user
-        $lastUsername = $authenticationUtils->getLastUsername();
-    }
+//    /**
+//     * @Route("/loginCheck", name="login_check")
+//     */
+//    public function loginCheck(AuthenticationUtils $authenticationUtils)
+//    {
+//        // get the login error if there is one
+//        $error = $authenticationUtils->getLastAuthenticationError();
+//        // last username entered by the user
+//        $lastUsername = $authenticationUtils->getLastUsername();
+//    }
 
     /**
      * @Route("/logout", name="app_logout", methods={"GET"})
@@ -44,7 +44,7 @@ class SecurityController extends AbstractController
             return $this->redirect('/login');
         }
 
-        if (!in_array('ROLE_AuuDMIN', $this->getUser()->getRoles(), true)) {
+        if (!in_array('ROLE_ADMIN', $this->getUser()->getRoles(), true)) {
             return $this->redirect('/');
         }
 
