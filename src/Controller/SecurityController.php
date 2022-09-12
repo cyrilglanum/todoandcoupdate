@@ -13,6 +13,12 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
+    private $doctrine;
+
+    public function __construct(ManagerRegistry $doctrine)
+    {
+        $this->doctrine = $doctrine;
+    }
 //    /**
 //     * @Route("/loginCheck", name="login_check")
 //     */
@@ -36,7 +42,7 @@ class SecurityController extends AbstractController
     /**
      * @Route("/create/user", name="user_create")
      */
-    public function createAction(Request $request, ManagerRegistry $doctrine, UserPasswordHasherInterface $passwordHasherConfig)
+    public function createAction(Request $request, UserPasswordHasherInterface $passwordHasherConfig)
     {
         $user = new User();
 
@@ -53,7 +59,7 @@ class SecurityController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $doctrine->getManager();
+            $em = $this->doctrine->getManager();
             $password = $passwordHasherConfig->hashPassword($user, $user->getPassword());
             $user->setPassword($password);
             $user->setRoles((array)($request->request->get('user')['roles']));

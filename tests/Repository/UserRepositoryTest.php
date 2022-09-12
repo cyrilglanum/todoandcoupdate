@@ -31,22 +31,10 @@ class UserRepositoryTest extends WebTestCase
 ////        $this->assertSelectorTextContains('a', 'To Do List app');
 //    }
 
-    public function testConnexion()
-    {
-        $client = static::createClient();
-        $userRepository = $this->getContainer()->get(UserRepository::class);
-
-        // retrieve the test user
-        $testUser = $userRepository->findOneByEmail('email1@test.com');
-
-        // simulate $testUser being logged in
-        $client->loginUser($testUser);
-
-        // test e.g. the profile page
-        $client->request('GET', '/task_list');
-        $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('a', 'To Do List app');
-    }
+//    public function testConnexion()
+//    {
+//
+//    }
 
     public function testCount()
     {

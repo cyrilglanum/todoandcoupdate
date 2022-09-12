@@ -1,34 +1,35 @@
 
-# BILEMO API
+# TODO&CO
 
-Bilemo API est une api de ressources de l'entreprise BileMo offrant des gammes de smartphone.
-
-L'API propose des "endpoints", décris comme points de terminaison qui permettront de rechercher
-des informations en fonction de requêtes effectuées sur des url spécifiées.
-
+TODO & CO est un site permettant de gérer des tâche quotidiennes et la mises à jour de celles-ci sous 
+Symfony.
 
 ## Sommaire documentation sur le projet
 
 [Documentation roles](Roles.md)
+
+### Documentation Technique
+
+[Documentation technique](Documentation_technique.md)
 
 ## Local
 
 #### Cloner le projet
 
 ```bash
-  git clone https://github.com/cyrilglanum/API-BileMo.git
+  git clone https://github.com/cyrilglanum/todoandco.git
 ```
 
 #### Aller sur le répertoire du projet
 
 ```bash
-  cd bilemoAPI
+  cd todoandco
 ```
 
 #### Installer les dépendances
 
 ```bash
-  php composer.phar install
+  php composer install
 ```
 
 #### Configurer le fichier .env
@@ -46,9 +47,9 @@ Exemple Wamp
 ```
 #
 <VirtualHost *:80>
-	ServerName local.bilemo.com
-	DocumentRoot "c:/wamp64/www/bilemoApi/public/"
-	<Directory  "c:/wamp64/www/bilemoApi/public/">
+	ServerName local.todoandco.com
+	DocumentRoot "c:/wamp64/www/todoandco/public/"
+	<Directory  "c:/wamp64/www/todoandco/public/">
 		Options +Indexes +Includes +FollowSymLinks +MultiViews
 		AllowOverride All
 		Require local
@@ -57,15 +58,12 @@ Exemple Wamp
 ```
 
 #### Database
-[Bilemo SQL](bilemoapi.sql) 
+[//]: # (TODO)
+[todoandco](bilemoapi.sql) 
+
 
 ```bash
 Importer le fichier SQL ci-dessus dans la base de données pour importer 
 toutes les données de test.
 ```
 
-### Documentation API - URL 
-
-```bash
-/documentation/api
-```

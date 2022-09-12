@@ -33,7 +33,7 @@ class TaskController extends AbstractController
     /**
      * @Route("/task_create", name="task_create")
      */
-    public function taskCreate(Request $request, ManagerRegistry $doctrine)
+    public function taskCreate(Request $request)
     {
         if ($this->getUser() === null) {
             return $this->redirectToRoute('app_login');
@@ -44,7 +44,7 @@ class TaskController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $doctrine->getManager();
+            $em = $this->doctrine->getManager();
             $task = new Task();
 
             if ($form->getData()->getAuthor() === null) {
@@ -69,9 +69,9 @@ class TaskController extends AbstractController
     /**
      * @Route("/task_list", name="task_list")
      */
-    public function taskList(ManagerRegistry $doctrine)
+    public function taskList()
     {
-        $tasks = $doctrine->getRepository(Task::class)->findAll();
+        $tasks = $this->doctrine->getRepository(Task::class)->findAll();
 
         return $this->render('task/list.html.twig', ['tasks' => $tasks, 'user' => $this->getUser()]);
     }
@@ -79,7 +79,7 @@ class TaskController extends AbstractController
     /**
      * @Route("/tasks/{id}/edit", name="task_edit")
      */
-    public function taskEdit(Request $request, ManagerRegistry $doctrine,Task $id)
+    public function taskEdit(Request $request,Task $id)
     {
 
         $form = $this->createForm(TaskType::class, $id);
@@ -91,7 +91,7 @@ class TaskController extends AbstractController
             $id->setContent($request->request->get('task')['content']);
             $id->setCreatedAt(new \DateTimeImmutable('now'));
 
-            $doctrine->getManager()->flush();
+            $this->doctrine->getManager()->flush();
 
             $this->addFlash('success', 'La tâche a bien été modifiée.');
 
@@ -107,11 +107,11 @@ class TaskController extends AbstractController
     /**
      * @Route("/tasks/{id}/toggle", name="task_toggle")
      */
-    public function toggleTaskAction(ManagerRegistry $doctrine, Task $id)
+    public function toggleTaskAction(Task $id)
     {
         $id->toggle(!$id->isDone());
 
-        $doctrine->getManager()->flush();
+        $this->doctrine->getManager()->flush();
 
         if ($id->isDone() === true) {
             $this->addFlash('success', sprintf('La tâche %s a bien été marquée comme faite.', $id->getTitle()));
@@ -125,9 +125,9 @@ class TaskController extends AbstractController
     /**
      * @Route("/tasks/{id}/delete", name="task_delete")
      */
-    public function deleteTaskAction(ManagerRegistry $doctrine, Task $id)
+    public function deleteTaskAction(Task $id)
     {
-        $em = $doctrine->getManager();
+        $em = $this->doctrine->getManager();
         $em->remove($id);
         $em->flush();
 

@@ -14,6 +14,13 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class UserController extends AbstractController
 {
+    private $doctrine;
+
+    public function __construct(ManagerRegistry $doctrine)
+    {
+        $this->doctrine = $doctrine;
+    }
+
     /**
      * @Route("/", name="app_home")
      */
@@ -25,7 +32,7 @@ class UserController extends AbstractController
     /**
      * @Route("/users", name="user_list")
      */
-    public function listAction(Request $request, ManagerRegistry $doctrine)
+    public function listAction(Request $request)
     {
         $user = $this->getUser();
 
@@ -37,7 +44,7 @@ class UserController extends AbstractController
             $roles = $this->getUser()->getRoles();
         }
 
-        $users = $doctrine->getRepository(User::class)->findAll();
+        $users = $this->doctrine->getRepository(User::class)->findAll();
 
         return $this->render('user/list.html.twig', ['users' =>
             $users]);
@@ -46,12 +53,12 @@ class UserController extends AbstractController
     /**
      * @Route("/user/edit/{id}", name="user_edit")
      */
-    public function editAction(Request $request, ManagerRegistry $doctrine, UserPasswordHasherInterface $passwordHasherConfig, $id)
+    public function editAction(Request $request, $id)
     {
-        $user = $doctrine->getRepository(User::class)->find($id);
+        $user = $this->doctrine->getRepository(User::class)->find($id);
 
         if (!$user) {
-            $users = $doctrine->getManager()->getRepository(User::class)->findAll();
+            $users = $this->doctrine->getManager()->getRepository(User::class)->findAll();
 
             return $this->render('user/list.html.twig', ['users' => $users]);
         }
@@ -60,7 +67,7 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $doctrine->getManager();
+            $em = $this->doctrine->getManager();
             $user->setRoles((array)($request->request->get('user_edit')['roles']));
 
             $em->persist($user);

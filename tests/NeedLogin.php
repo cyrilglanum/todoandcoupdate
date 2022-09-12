@@ -8,6 +8,7 @@ use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 trait NeedLogin
+
 {
 
     public function login(KernelBrowser $client, User $user)

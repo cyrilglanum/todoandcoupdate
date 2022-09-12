@@ -2,13 +2,16 @@
 
 namespace App\Tests\Controller;
 
+use App\Entity\User;
 use App\Tests\NeedLogin;
+use Liip\TestFixturesBundle\Test\FixturesTrait;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
 class PageControllerTest extends WebTestCase
 {
     use NeedLogin;
+    use FixturesTrait;
 
     public function testHelloPage()
     {
@@ -34,7 +37,7 @@ class PageControllerTest extends WebTestCase
         self::assertResponseRedirects('/login');
     }
 
-    public function testCreateUser()
+    public function testCreateUserWithValidDatas()
     {
         $client = static::createClient();
 
@@ -45,9 +48,18 @@ class PageControllerTest extends WebTestCase
             '_password' => 'aaaa'
         ]);
 
-        $crawler = $client->request('GET', '/create/user');
         self::assertResponseStatusCodeSame(Response::HTTP_OK);
         self::assertSelectorTextContains('h1', 'Formulaire utilisateur');
+
+        $users = $this->loadFixtureFiles([__DIR__.'/users.yaml']);
+
+//        $user = new User([''])
+
+
+        $this->login($client,new User());
+
+        $crawler = $client->request('GET', '/create/user');
+
 
         static::assertSame(1, $crawler->filter('input[name="user[username]"]')->count());
         static::assertSame(1, $crawler->filter('input[name="user[email]"]')->count());
@@ -65,7 +77,7 @@ class PageControllerTest extends WebTestCase
             'user[password][second]' => "aaaa",
         ]);
 
-        dd($client);
+//        dd($client);
         
         $crawler = $client->followRedirect();
 

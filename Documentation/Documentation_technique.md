@@ -1,19 +1,42 @@
 
-# Roles BILEMO API
+# Documentation technique Todo&Co
 
-Différents rôles sont attribués pour chaque utilisateur
+### Mise en place de la migration
 
-[Role_user]
+Une retouche a été nécessaire pour voir ce qu'il fallait refaire pour apporter une migration de 
+version majeur de symfony.
 
-[Role_client]
+Il a donc été fait une opération de compréhension de l'architecture initiale du projet pour 
+permettre de prévoir la nouvelle architecture qui allait se mettre en place pour l'application améliorée
+.
+A partir de là, le projet a été recréé et la mise en place de la structure base de données remise en place et tout
+cela sous symfony 5.4.
 
-[Role_admin]
+### Authentification
 
-Et chaque rôle aura des possibilités ou des droits sur les actions de l'API.
+Au niveau de l'authentification, elle a donc été implémentée en reprenant l'architecture initiale du projet
+et en respectant la documentation de Symfony prévue à l'effet.
 
-L'administrateur pourra ajouter des utilisateurs client / utilisateurs, qui pourront
-eux effectuer des recherches sur les différents utilisateurs/clients/produits qui sont recensés
-dans les données de l'api.
+Les fichiers qui sont en charge de l'authentification sont dans le LoginController
+comment s’opère l’authentification ;
+
+Pour comprendre tout le process :
+- l'utilisateur essaye d'accéder à une ressource protégée
+- Le firewall initie un process d'authentication en redirigeant l'utilisateur sur le formulaire de login
+- la page login est rendue à l'écran
+- L'utilisateur soumet ses informations
+- le système de sécurité intercepte la requête, contrôle les informations et authentifie l'utilisateur
+si elles sont correctes ou renvoie sur le formulaire de login sinon.
+
+
+#### Roles
+
+[Role_user] -> Ce rôle permettra de naviguer sur le site étant authentifié et pourra crééer modifier ses tâches
+
+[Role_admin] -> Ce rôle aura tous les droits entre la navigation, la vérification et pourra bien sur
+modifier, supprimer n'importe quelle tâche. 
+
+
 
 
 
