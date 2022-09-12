@@ -73,6 +73,16 @@ class UserEntityTest extends KernelTestCase
         $this->assertEquals("cyrilg@gmail.com", $task->getEmail());
     }
 
+    public function testSetEmail(): void
+    {
+        $value = 'cyril@glanumtest.com';
+
+        $user = New User();
+        $user->setEmail($value);
+
+        self::assertEquals($value, $user->getEmail());
+    }
+
     public function testGetRoles(): void
     {
         $value = ['ROLE_ADMIN'];
@@ -82,6 +92,13 @@ class UserEntityTest extends KernelTestCase
         self::assertInstanceOf(User::class, $response);
         self::assertContains('ROLE_USER', $this->user->getRoles());
 
+    }
+
+    public function testSetRoles(): void
+    {
+        $user = new User();
+        $user->setRoles(['ROLE_ADMIN']);
+        static::assertEquals($user->getRoles(), ['ROLE_ADMIN', 'ROLE_USER']);
     }
 
     public function testGetPassword(): void

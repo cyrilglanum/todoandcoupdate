@@ -41,59 +41,44 @@ class PageControllerTest extends WebTestCase
     {
         $client = static::createClient();
 
-        $csrfToken = $client->getContainer()->get('security.csrf.token_manager')->getToken('authenticate');
-        $client->request('POST', '/login', [
-            '_csrf_token' => $csrfToken,
-            '_username' => "cyril@glanum.com",
-            '_password' => 'aaaa'
-        ]);
+        $crawler = $client->request('GET', '/login');
+        self::assertResponseStatusCodeSame(Response::HTTP_OK);
+        static::assertSame(1, $crawler->filter('input[name="email"]')->count());
+        static::assertSame(1, $crawler->filter('input[name="password"]')->count());
+
+        $form = $crawler->selectButton('Se connecter')->form();
+        $form['email'] = 'cyril@glanum.com';
+        $form['password'] = 'aaaa';
+
+        $client->submit($form);
+
+        self::assertResponseStatusCodeSame(Response::HTTP_FOUND);
+
+        $crawler = $client->followRedirect();
 
         self::assertResponseStatusCodeSame(Response::HTTP_OK);
-        self::assertSelectorTextContains('h1', 'Formulaire utilisateur');
+        static::assertSame("Bienvenue sur Todo List, l'application vous permettant de gérer l'ensemble de vos tâches sans effort !", $crawler->filter('h1')->text());
 
-        $users = $this->loadFixtureFiles([__DIR__.'/users.yaml']);
-
-//        $user = new User([''])
-
-
-        $this->login($client,new User());
+        $this->assertEquals(1, $crawler->filter('h1')->count());
 
         $crawler = $client->request('GET', '/create/user');
 
-
+        static::assertSame("Formulaire utilisateur", $crawler->filter('h1')->text());
         static::assertSame(1, $crawler->filter('input[name="user[username]"]')->count());
         static::assertSame(1, $crawler->filter('input[name="user[email]"]')->count());
         static::assertSame(3, $crawler->filter('input[name="user[roles][]"]')->count());
         static::assertSame(1, $crawler->filter('input[name="user[password][first]"]')->count());
         static::assertSame(1, $crawler->filter('input[name="user[password][second]"]')->count());
 
-        $csrfToken = $client->getContainer()->get('security.csrf.token_manager')->getToken('authenticate');
-        $client->request('POST', '/create/user', [
-            '_csrf_token' => $csrfToken,
-            'user[username]' => "testajout",
-            'user[email]' => "test@ajout.com",
-            'user[roles][]' => "ROLE_USER",
-            'user[password][first]' => "aaaa",
-            'user[password][second]' => "aaaa",
-        ]);
+        $form = $crawler->selectButton('Ajouter')->form();
+        $form['user[username]'] = 'cyrilglanum';
+        $form['user[email]'] = 'cyril@glanum.com';
+        $form['user[password][first]'] = 'bbbb';
+        $form['user[password][second]'] = 'bbbb';
 
-//        dd($client);
-        
-        $crawler = $client->followRedirect();
-
-        $this->assertEquals(1, $crawler->filter('h1')->count());
-
-//        self::assertResponseStatusCodeSame(Response::HTTP_FOUND);
-//        self::assertResponseRedirects();
-//        $client->followRedirect();
-
-//        self::assertResponseStatusCodeSame(Response::HTTP_OK);
-//        static::assertSame("Bienvenue sur Todo List, l'application vous permettant de gérer l'ensemble de vos tâches sans effort !", $crawler->filter('h1')->text());
-//
-//        $this->assertEquals(1, $crawler->filter('h1')->count());
+        $client->submit($form);
 
         return $client;
-
     }
 
 //    public function testBadCreateUser()

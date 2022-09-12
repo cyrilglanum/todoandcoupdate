@@ -2,7 +2,7 @@
 <html lang="en">
  <head>
   <meta charset="UTF-8">
-  <title>Dashboard for C:\wamp64\www\todoandco\src\Form</title>
+  <title>Dashboard for C:\wamp64\www\todoandco\src\Security</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="../_css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="../_css/nv.d3.min.css" rel="stylesheet" type="text/css">
@@ -17,7 +17,7 @@
       <nav aria-label="breadcrumb">
        <ol class="breadcrumb">
          <li class="breadcrumb-item"><a href="../index.html">C:\wamp64\www\todoandco\src</a></li>
-         <li class="breadcrumb-item"><a href="index.html">Form</a></li>
+         <li class="breadcrumb-item"><a href="index.html">Security</a></li>
          <li class="breadcrumb-item active">(Dashboard)</li>
 
        </ol>
@@ -58,8 +58,6 @@
         </tr>
        </thead>
        <tbody>
-       <tr><td><a href="TaskType.php.html#12">App\Form\TaskType</a></td><td class="text-right">0%</td></tr>
-       <tr><td><a href="UserEditType.php.html#15">App\Form\UserEditType</a></td><td class="text-right">0%</td></tr>
 
        </tbody>
       </table>
@@ -113,10 +111,7 @@
         </tr>
        </thead>
        <tbody>
-       <tr><td><a href="TaskType.php.html#14"><abbr title="App\Form\TaskType::buildForm">buildForm</abbr></a></td><td class="text-right">0%</td></tr>
-       <tr><td><a href="TaskType.php.html#27"><abbr title="App\Form\TaskType::configureOptions">configureOptions</abbr></a></td><td class="text-right">0%</td></tr>
-       <tr><td><a href="UserEditType.php.html#17"><abbr title="App\Form\UserEditType::buildForm">buildForm</abbr></a></td><td class="text-right">0%</td></tr>
-       <tr><td><a href="UserEditType.php.html#38"><abbr title="App\Form\UserEditType::configureOptions">configureOptions</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="AppAuthenticator.php.html#46"><abbr title="App\Security\AppAuthenticator::onAuthenticationSuccess">onAuthenticationSuccess</abbr></a></td><td class="text-right">66%</td></tr>
 
        </tbody>
       </table>
@@ -133,6 +128,7 @@
         </tr>
        </thead>
        <tbody>
+       <tr><td><a href="AppAuthenticator.php.html#46"><abbr title="App\Security\AppAuthenticator::onAuthenticationSuccess">onAuthenticationSuccess</abbr></a></td><td class="text-right">2</td></tr>
 
        </tbody>
       </table>
@@ -161,7 +157,7 @@ $(document).ready(function() {
       .yAxis.tickFormat(d3.format('d'));
 
     d3.select('#classCoverageDistribution svg')
-      .datum(getCoverageDistributionData([2,0,0,0,0,0,0,0,0,0,0,1], "Class Coverage"))
+      .datum(getCoverageDistributionData([0,0,0,0,0,0,0,0,0,0,1,0], "Class Coverage"))
       .transition().duration(500).call(chart);
 
     nv.utils.windowResize(chart.update);
@@ -179,7 +175,7 @@ $(document).ready(function() {
       .yAxis.tickFormat(d3.format('d'));
 
     d3.select('#methodCoverageDistribution svg')
-      .datum(getCoverageDistributionData([4,0,0,0,0,0,0,0,0,0,0,2], "Method Coverage"))
+      .datum(getCoverageDistributionData([0,0,0,0,0,0,0,1,0,0,0,3], "Method Coverage"))
       .transition().duration(500).call(chart);
 
     nv.utils.windowResize(chart.update);
@@ -229,7 +225,7 @@ $(document).ready(function() {
     chart.yAxis.axisLabel('Cyclomatic Complexity');
 
     d3.select('#classComplexity svg')
-      .datum(getComplexityData([[0,2,"<a href=\"TaskType.php.html#12\">App\\Form\\TaskType<\/a>"],[0,2,"<a href=\"UserEditType.php.html#15\">App\\Form\\UserEditType<\/a>"],[100,2,"<a href=\"UserType.php.html#15\">App\\Form\\UserType<\/a>"]], 'Class Complexity'))
+      .datum(getComplexityData([[90.9090909090909,5,"<a href=\"AppAuthenticator.php.html#18\">App\\Security\\AppAuthenticator<\/a>"]], 'Class Complexity'))
       .transition()
       .duration(500)
       .call(chart);
@@ -253,7 +249,7 @@ $(document).ready(function() {
     chart.yAxis.axisLabel('Method Complexity');
 
     d3.select('#methodComplexity svg')
-      .datum(getComplexityData([[0,1,"<a href=\"TaskType.php.html#14\">App\\Form\\TaskType::buildForm<\/a>"],[0,1,"<a href=\"TaskType.php.html#27\">App\\Form\\TaskType::configureOptions<\/a>"],[0,1,"<a href=\"UserEditType.php.html#17\">App\\Form\\UserEditType::buildForm<\/a>"],[0,1,"<a href=\"UserEditType.php.html#38\">App\\Form\\UserEditType::configureOptions<\/a>"],[100,1,"<a href=\"UserType.php.html#17\">App\\Form\\UserType::buildForm<\/a>"],[100,1,"<a href=\"UserType.php.html#53\">App\\Form\\UserType::configureOptions<\/a>"]], 'Method Complexity'))
+      .datum(getComplexityData([[100,1,"<a href=\"AppAuthenticator.php.html#26\">App\\Security\\AppAuthenticator::__construct<\/a>"],[100,1,"<a href=\"AppAuthenticator.php.html#31\">App\\Security\\AppAuthenticator::authenticate<\/a>"],[66.66666666666666,2,"<a href=\"AppAuthenticator.php.html#46\">App\\Security\\AppAuthenticator::onAuthenticationSuccess<\/a>"],[100,1,"<a href=\"AppAuthenticator.php.html#57\">App\\Security\\AppAuthenticator::getLoginUrl<\/a>"]], 'Method Complexity'))
       .transition()
       .duration(500)
       .call(chart);
