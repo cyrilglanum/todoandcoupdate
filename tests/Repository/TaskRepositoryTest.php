@@ -17,7 +17,7 @@ class TaskRepositoryTest extends KernelTestCase
 {
     use FixturesTrait;
 
-     public function getEntity()
+    public function getEntity()
     {
         $task = new Task();
 
@@ -34,9 +34,10 @@ class TaskRepositoryTest extends KernelTestCase
     {
         self::bootKernel();
         $tasks = self::$container->get(TaskRepository::class)->count([]);
-        $this->assertEquals(10, $tasks);
+        $this->assertEquals(11, $tasks);
     }
 
+    //with fixture tests
     public function testGetGoodTasksWithAuthorIdValues()
     {
         self::bootKernel();
@@ -52,51 +53,56 @@ class TaskRepositoryTest extends KernelTestCase
         }
     }
 
-//    public function testAddTaskWithNotGoodValuesInRepository()
-//    {
-//        self::bootKernel();
-//
-//        $task = new Task();
-//        $task->setTitle('');
-//        $task->setAuthor('');
-//        $task->setCreatedAt('');
-//        $task->setIsDone('');
-//        $task->setContent('');
-//
-//        // Now, mock the repository so it returns the mock of the employee
-//        $taskRepository = $this->createMock(ObjectRepository::class);
-//    }
+    public function testValidEntity()
+    {
+        $task = new Task();
 
-//    public function testValidEntity(ManagerRegistry $doctrine)
-//    {
-//        $task = $this->getEntity();
-//        self::bootKernel();
-//
-//        $em = $doctrine->getManager();
-//
-//        dd($task);
-//        $em->persist($task);
-//        $em->flush();
-//
-//        $this->assertInstanceOf(Task::class, $task);
-////        $this->assert
-//    }
+        $task->setCreatedAt(new \DateTimeImmutable('now'));
+        $task->setIsDone(0);
+        $task->setContent('Test de content tâche');
+        $task->setTitle('Test de title tâche');
+        $task->setAuthor(21);
 
+        self::bootKernel();
 
+        $error = self::$container->get('validator')->validate($task);
+        $this->assertCount(0, $error);
+    }
 
+    public function testAuthorTask()
+    {
+        $task = new Task();
 
+        $task->setAuthor(21);
+        $this->assertEquals(21, $task->getAuthor());
+    }
 
+    public function testCreatedAtTask(): void
+    {
+        $value = new \DateTimeImmutable('now');
 
+        $task = new Task();
+        $task->setCreatedAt($value);
 
-//     public function testCreateValidTitleTask()
-//    {
-//        $task = new Task();
-//        $task->setTitle(1000);
-//
-//        $taskRepository = $this->createMock(TaskRepository::class);
-//
-////        $this->assertEquals(2100, $salaryCalculator->calculateTotalSalary(1));
-//    }
+        self::assertEquals($value, $task->getCreatedAt());
+    }
+
+    public function testSetTitleTask(): void
+    {
+        $task = new Task();
+        $task->setTitle('Title tâche');
+
+        self::assertEquals('Title tâche', $task->getTitle());
+    }
+
+    public function testSetContentTask(): void
+    {
+        $task = new Task();
+        $task->setContent('Content tâche');
+
+        self::assertEquals('Content tâche', $task->getContent());
+    }
+
 
 
 }

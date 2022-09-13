@@ -29,14 +29,6 @@ class PageControllerTest extends WebTestCase
         self::assertSelectorTextContains('h1', 'Bienvenue sur Todo List');
     }
 
-    public function testCreatePageIsAdminRequired()
-    {
-        $client = static::createClient();
-        $client->request('GET', '/create/user');
-
-        self::assertResponseRedirects('/login');
-    }
-
     public function testCreateUserWithValidDatas()
     {
         $client = static::createClient();

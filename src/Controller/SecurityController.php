@@ -23,6 +23,14 @@ class SecurityController extends AbstractController
     }
 
     /**
+     * @Route("/", name="app_home")
+     */
+    public function index(): Response
+    {
+        return $this->render('default/index.html.twig');
+    }
+
+    /**
      * @Route("/logout", name="app_logout")
      */
     public function logout(): void
@@ -38,7 +46,7 @@ class SecurityController extends AbstractController
     {
         $user = new User();
 
-        if(!$this->getUser()){
+        if (!$this->getUser()) {
             return $this->redirect('/login');
         }
 

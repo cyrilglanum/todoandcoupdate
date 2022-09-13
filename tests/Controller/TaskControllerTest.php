@@ -40,6 +40,21 @@ class TaskControllerTest extends WebTestCase
         return $client;
     }
 
+    public function testIndex()
+    {
+        $client = static::createClient();
+        $crawler = $client->request('GET', '/');
+        self::assertResponseStatusCodeSame(Response::HTTP_OK);
+        static::assertSame("Bienvenue sur Todo List, l'application vous permettant de gérer l'ensemble de vos tâches sans effort !", $crawler->filter('h1')->text());
+    }
+
+    public function test404()
+    {
+        $client = static::createClient();
+        $client->request('GET', '/index');
+        self::assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
+    }
+
     public function testLoginForCreateTask()
     {
         $client = $this->testLoginForTask();
@@ -61,7 +76,6 @@ class TaskControllerTest extends WebTestCase
 
         self::assertSelectorExists('.alert.alert-success');
         self::assertSelectorTextContains('div.alert.alert-success', "Superbe ! La tâche a été bien été ajoutée.");
-
         self::assertResponseStatusCodeSame(Response::HTTP_OK);
         self::assertSelectorNotExists('.alert alert-danger');
     }
@@ -101,30 +115,41 @@ class TaskControllerTest extends WebTestCase
         static::assertSame("Se connecter", $crawler->filter('body > div:nth-child(2) > div:nth-child(1) > a')->text());
     }
 
-//    public function testDisplayCreateTaskPage()
-//    {
-//        $client = static::createClient();
-//        $crawler = $client->request('GET', '/login');
-//
-////        $form = $crawler->selectButton('Créer une nouvelle tâche');
-////        $crawler =$crawler->selectButton('Créer une nouvelle tâche')->link());
-////        $client->submit($form);
-//
-//        self::assertResponseStatusCodeSame(Response::HTTP_FOUND);
-//        $client->followRedirect();
-//
-////        self::assertSelectorExists('.btn');
-////        self::assertSelectorTextContains('.btn', 'Retour à la liste des tâches');
-////        self::assertResponseStatusCodeSame(Response::HTTP_OK);
-////        self::assertSelectorNotExists('.alert alert-danger');
-//    }
-
-    public function testH1IndexPage()
+    public function testRemoveTaskFromUser()
     {
         $client = static::createClient();
-        $client->request('GET', '/');
 
-        self::assertSelectorTextContains('h1', 'Bienvenue sur Todo List');
+        $crawler = $client->request('GET', '/login');
+        self::assertResponseStatusCodeSame(Response::HTTP_OK);
+        static::assertSame(1, $crawler->filter('input[name="email"]')->count());
+        static::assertSame(1, $crawler->filter('input[name="password"]')->count());
+
+        $form = $crawler->selectButton('Se connecter')->form();
+        $form['email'] = 'cyril@glanum.com';
+        $form['password'] = 'aaaa';
+
+        $client->submit($form);
+        self::assertResponseStatusCodeSame(Response::HTTP_FOUND);
+
+        $crawler = $client->followRedirect();
+
+        self::assertResponseStatusCodeSame(Response::HTTP_OK);
+        static::assertSame("Bienvenue sur Todo List, l'application vous permettant de gérer l'ensemble de vos tâches sans effort !", $crawler->filter('h1')->text());
+        $this->assertEquals(1, $crawler->filter('h1')->count());
+        $crawler = $client->request('GET', '/task_list');
+        self::assertResponseStatusCodeSame(Response::HTTP_OK);
+        static::assertSame("Supprimer", $crawler->filter('.btn.btn-danger.btn-sm.pull-right')->text());
+
+        $form = $crawler->selectButton('Supprimer')->form();
+
+        $client->submit($form);
+
+        self::assertResponseStatusCodeSame(Response::HTTP_FOUND);
+
+        $client->followRedirect();
+
+        self::assertSelectorExists('.alert.alert-success');
+        self::assertSelectorTextContains('div.alert.alert-success', "Superbe ! La tâche a bien été supprimée.");
     }
 
 //    public function testListActionWithoutLogin()

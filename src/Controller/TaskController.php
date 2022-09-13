@@ -23,14 +23,6 @@ class TaskController extends AbstractController
     }
 
     /**
-     * @Route("/", name="app_home")
-     */
-    public function index(): Response
-    {
-        return $this->render('default/index.html.twig');
-    }
-
-    /**
      * @Route("/task_create", name="task_create")
      */
     public function taskCreate(Request $request)
@@ -57,7 +49,7 @@ class TaskController extends AbstractController
             $task->setContent($request->request->get('task')['content']);
             $task->setCreatedAt(new \DateTimeImmutable('now'));
             $task->setIsDone(false);
-
+            
             $em->persist($task);
             $em->flush();
 

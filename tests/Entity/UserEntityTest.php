@@ -15,15 +15,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class UserEntityTest extends KernelTestCase
 {
-    private const NOT_BLANK_MESSAGE = "Veuillez choisir une valeur.";
-    private const EMAIL_CONSTRAINT_MESSAGE = "L'\email \"atcchoum-du-974@gmail\" n\'est pas valide.";
-    private const INVALID_EMAIL_VALUE = "atchoum-du-974@gmail.com";
-    private const PASSWORD_REGEX_CONSTRAINT = "Le mot de passe doit contenir au moins 4 caractères";
-    private const VALID_EMAIL_VALUE = "atchoum-du-974@gmail.com";
-    private const VALID_PASSWORD_VALUE = "Atchoum-du-974";
-
-    private $validator;
-
     public function setUp(): void
     {
         parent::setUp();
