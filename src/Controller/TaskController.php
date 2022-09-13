@@ -23,14 +23,6 @@ class TaskController extends AbstractController
     }
 
     /**
-     * @Route("/", name="app_home")
-     */
-    public function index(): Response
-    {
-        return $this->render('default/index.html.twig');
-    }
-
-    /**
      * @Route("/task_create", name="task_create")
      */
     public function taskCreate(Request $request)
@@ -38,23 +30,26 @@ class TaskController extends AbstractController
         if ($this->getUser() === null) {
             return $this->redirectToRoute('app_login');
         }
+
         $task = new Task();
+        $task->setIsDone(0);
+        $task->setCreatedAt(new \DateTimeImmutable('now'));
+        $task->setAuthor($this->getUser()->getId());
+
         $form = $this->createForm(TaskType::class, $task);
 
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->doctrine->getManager();
             $task = new Task();
-
-            if ($form->getData()->getAuthor() === null) {
+            if ($task->getAuthor() === null) {
                 $task->setAuthor($this->getUser()->getId());
             }
             $task->setTitle($request->request->get('task')['title']);
             $task->setContent($request->request->get('task')['content']);
             $task->setCreatedAt(new \DateTimeImmutable('now'));
             $task->setIsDone(false);
-
+            
             $em->persist($task);
             $em->flush();
 

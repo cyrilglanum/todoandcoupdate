@@ -2,13 +2,17 @@
 
 namespace App\Tests\Controller;
 
+use App\Entity\User;
+use App\Repository\UserRepository;
 use App\Tests\NeedLogin;
+use Liip\TestFixturesBundle\Test\FixturesTrait;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
 class SecurityControllerTest extends WebTestCase
 {
     use NeedLogin;
+    use FixturesTrait;
 
     public function testDisplayLoginPage()
     {
@@ -24,8 +28,8 @@ class SecurityControllerTest extends WebTestCase
         $client = static::createClient();
         $crawler = $client->request('GET', '/login');
         $form = $crawler->selectButton('Se connecter')->form([
-            '_username' => "cyril@glanum.com",
-            '_password' => 'fakepassword'
+            'email' => "cyril@glanum.com",
+            'password' => 'fakepassword'
         ]);
 
         $client->submit($form);
@@ -44,15 +48,16 @@ class SecurityControllerTest extends WebTestCase
 
         $crawler = $client->request('GET', '/login');
         self::assertResponseStatusCodeSame(Response::HTTP_OK);
-        static::assertSame(1, $crawler->filter('input[name="_username"]')->count());
-        static::assertSame(1, $crawler->filter('input[name="_password"]')->count());
+        static::assertSame(1, $crawler->filter('input[name="email"]')->count());
+        static::assertSame(1, $crawler->filter('input[name="password"]')->count());
 
-        $csrfToken = $client->getContainer()->get('security.csrf.token_manager')->getToken('authenticate');
-        $client->request('POST', '/login', [
-            '_csrf_token' => $csrfToken,
-            '_username' => "cyril@glanum.com",
-            '_password' => 'aaaa'
-        ]);
+        $form = $crawler->selectButton('Se connecter')->form();
+        $form['email'] = 'cyril@glanum.com';
+        $form['password'] = 'aaaa';
+
+        $client->submit($form);
+
+        self::assertResponseStatusCodeSame(Response::HTTP_FOUND);
 
         $crawler = $client->followRedirect();
 
@@ -62,6 +67,20 @@ class SecurityControllerTest extends WebTestCase
         $this->assertEquals(1, $crawler->filter('h1')->count());
 
         return $client;
+    }
+
+    public function testIndexActionWithoutLogin()
+    {
+        // If the user is not logged in, redirection to login
+        $client = static::createClient();
+        $client->request('GET', '/task_create');
+        self::assertResponseStatusCodeSame(Response::HTTP_FOUND);
+
+        $crawler = $client->followRedirect();
+        self::assertResponseStatusCodeSame(Response::HTTP_OK);
+
+        static::assertSame(1, $crawler->filter('input[name="email"]')->count());
+        static::assertSame(1, $crawler->filter('input[name="password"]')->count());
     }
 
 }

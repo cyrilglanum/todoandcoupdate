@@ -22,32 +22,35 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/", name="app_home")
-     */
-    public function index(): Response
-    {
-        return $this->render('default/index.html.twig');
-    }
-
-    /**
      * @Route("/users", name="user_list")
      */
     public function listAction(Request $request)
     {
         $user = $this->getUser();
 
-        if($user === null){
-            return $this->redirectToRoute('app_home');
+        if ($user === null) {
+            return new Response("Vous n'êtes pas autorisé à voir cette page.", 403, ["Content-Type" => "application/json"]);
         }
 
-        if($user){
+        if ($user) {
             $roles = $this->getUser()->getRoles();
+
+            $admin = false;
+            foreach ($roles as $role){
+                if(str_contains('ROLE_ADMIN', $role)){
+                    $admin = true;
+                }
+            }
+
+            if ($admin) {
+                $users = $this->doctrine->getRepository(User::class)->findAll();
+
+                return $this->render('user/list.html.twig', ['users' =>
+                    $users]);
+            }
         }
-
-        $users = $this->doctrine->getRepository(User::class)->findAll();
-
-        return $this->render('user/list.html.twig', ['users' =>
-            $users]);
+        
+        return $this->render('default/index.html.twig');
     }
 
     /**

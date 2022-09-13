@@ -15,15 +15,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class UserEntityTest extends KernelTestCase
 {
-    private const NOT_BLANK_MESSAGE = "Veuillez choisir une valeur.";
-    private const EMAIL_CONSTRAINT_MESSAGE = "L'\email \"atcchoum-du-974@gmail\" n\'est pas valide.";
-    private const INVALID_EMAIL_VALUE = "atchoum-du-974@gmail.com";
-    private const PASSWORD_REGEX_CONSTRAINT = "Le mot de passe doit contenir au moins 4 caractères";
-    private const VALID_EMAIL_VALUE = "atchoum-du-974@gmail.com";
-    private const VALID_PASSWORD_VALUE = "Atchoum-du-974";
-
-    private $validator;
-
     public function setUp(): void
     {
         parent::setUp();
@@ -73,6 +64,16 @@ class UserEntityTest extends KernelTestCase
         $this->assertEquals("cyrilg@gmail.com", $task->getEmail());
     }
 
+    public function testSetEmail(): void
+    {
+        $value = 'cyril@glanumtest.com';
+
+        $user = New User();
+        $user->setEmail($value);
+
+        self::assertEquals($value, $user->getEmail());
+    }
+
     public function testGetRoles(): void
     {
         $value = ['ROLE_ADMIN'];
@@ -82,6 +83,13 @@ class UserEntityTest extends KernelTestCase
         self::assertInstanceOf(User::class, $response);
         self::assertContains('ROLE_USER', $this->user->getRoles());
 
+    }
+
+    public function testSetRoles(): void
+    {
+        $user = new User();
+        $user->setRoles(['ROLE_ADMIN']);
+        static::assertEquals($user->getRoles(), ['ROLE_ADMIN', 'ROLE_USER']);
     }
 
     public function testGetPassword(): void

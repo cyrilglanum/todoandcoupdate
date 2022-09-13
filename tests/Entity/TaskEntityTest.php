@@ -9,7 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 class TaskEntityTest extends KernelTestCase
 {
 
-    public function getEntity()
+    public function getEntity():Task
     {
         $task = new Task();
 

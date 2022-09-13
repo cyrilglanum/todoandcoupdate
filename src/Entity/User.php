@@ -31,6 +31,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      * @Assert\NotBlank(message="Vous devez saisir une adresse email.")
+     * @Assert\Email(message="Le format de l'email n'est pas correct.")
      */
     private $email;
 
@@ -43,6 +44,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Assert\NotBlank()
      */
     private $password;
 
@@ -128,33 +130,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEmail($email)
     {
         $this->email = $email;
-    }
-
-    public function getTasks(ManagerRegistry $doctrine)
-    {
-        return $this->tasks;
-    }
-
-    public function addTask(Task $task): self
-    {
-        if (!$this->tasks->contains($task)) {
-            $this->tasks[] = $task;
-            $task->setAuthor($this->getId());
-        }
-
-        return $this;
-    }
-
-    public function removeTask(Task $task): self
-    {
-        if ($this->tasks->contains($task)) {
-            $this->tasks->removeElement($task);
-            if ($task->getAuthor() === $this->getId()) {
-                $task->setUser(null);
-            }
-        }
-
-        return $this;
     }
 
     /**

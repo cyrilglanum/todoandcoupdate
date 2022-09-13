@@ -8,6 +8,9 @@ use Doctrine\Persistence\ObjectManager;
 
 class TaskFixtures extends Fixture
 {
+    /**
+     * @codeCoverageIgnore
+     */
     public function load(ObjectManager $manager): void
     {
         for ($i = 1; $i <= 10; $i++) {
