@@ -17,8 +17,11 @@ cela sous symfony 5.4.
 Au niveau de l'authentification, elle a donc été implémentée en reprenant l'architecture initiale du projet
 et en respectant la documentation de Symfony prévue à l'effet.
 
-Les fichiers qui sont en charge de l'authentification sont dans le LoginController
-comment s’opère l’authentification ;
+Il a été mis en place l'AppAuthenticator pour fournir un accès unique en fonction 
+des 3 éléments qui sont l'email, le password et le token csrf.
+Il a remplacé le système d'authentification classique de la documentation.
+
+cf : fonction authenticate -> src/Security/AppAuthenticator.php
 
 Pour comprendre tout le process :
 - l'utilisateur essaye d'accéder à une ressource protégée
