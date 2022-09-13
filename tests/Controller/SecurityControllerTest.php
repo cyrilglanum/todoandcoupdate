@@ -69,4 +69,18 @@ class SecurityControllerTest extends WebTestCase
         return $client;
     }
 
+    public function testIndexActionWithoutLogin()
+    {
+        // If the user is not logged in, redirection to login
+        $client = static::createClient();
+        $client->request('GET', '/task_create');
+        self::assertResponseStatusCodeSame(Response::HTTP_FOUND);
+
+        $crawler = $client->followRedirect();
+        self::assertResponseStatusCodeSame(Response::HTTP_OK);
+
+        static::assertSame(1, $crawler->filter('input[name="email"]')->count());
+        static::assertSame(1, $crawler->filter('input[name="password"]')->count());
+    }
+
 }
