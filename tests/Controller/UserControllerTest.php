@@ -35,55 +35,45 @@ class UserControllerTest extends WebTestCase
         $form['password'] = 'aaaa';
 
         $client->submit($form);
-
         self::assertResponseStatusCodeSame(Response::HTTP_FOUND);
 
         $crawler = $client->followRedirect();
-
         self::assertResponseStatusCodeSame(Response::HTTP_OK);
         static::assertSame("Bienvenue sur Todo List, l'application vous permettant de gérer l'ensemble de vos tâches sans effort !", $crawler->filter('h1')->text());
-
         $this->assertEquals(1, $crawler->filter('h1')->count());
 
         $crawler = $client->request('GET', '/users');
         self::assertResponseStatusCodeSame(Response::HTTP_OK);
         static::assertSame("Liste des utilisateurs", $crawler->filter('h1')->text());
-
-        return $client;
     }
 
     public function testListUserNotAdmin()
     {
+        //création du client
         $client = static::createClient();
-
+        //Requête à l'URL prévue
         $crawler = $client->request('GET', '/login');
+        //Contrôle des champs prévus
         self::assertResponseStatusCodeSame(Response::HTTP_OK);
         static::assertSame(1, $crawler->filter('input[name="email"]')->count());
         static::assertSame(1, $crawler->filter('input[name="password"]')->count());
-
+        //Ajout des valeurs dans le formulaire du bouton de connexion
         $form = $crawler->selectButton('Se connecter')->form();
         $form['email'] = 'email1@test.com';
         $form['password'] = 'aaaa';
-
+        //Soumission du formulaire
         $client->submit($form);
-
         self::assertResponseStatusCodeSame(Response::HTTP_FOUND);
-
+        //Redirection
         $crawler = $client->followRedirect();
-
         self::assertResponseStatusCodeSame(Response::HTTP_OK);
         static::assertSame("Bienvenue sur Todo List, l'application vous permettant de gérer l'ensemble de vos tâches sans effort !", $crawler->filter('h1')->text());
-
         $this->assertEquals(1, $crawler->filter('h1')->count());
-
+        //Test d'accès à l'URL /users avec un compte non admin
         $client->request('GET', '/users');
-        //redirection to indexPage because not admin
+        //Redirection page index car non autorisé
         self::assertResponseStatusCodeSame(Response::HTTP_OK);
         static::assertSame("Bienvenue sur Todo List, l'application vous permettant de gérer l'ensemble de vos tâches sans effort !", $crawler->filter('h1')->text());
-
-        //After login page ..
-
-        return $client;
     }
 
     public function test404()
@@ -126,14 +116,9 @@ class UserControllerTest extends WebTestCase
 
         $link = $crawler->selectLink('Modifier')->link();
         //deconnexion
-        $client->click($link);
+        $crawler = $client->click($link);
 
         self::assertResponseStatusCodeSame(Response::HTTP_OK);
-//        $crawler = $client->followRedirect();
-//        self::assertResponseStatusCodeSame(Response::HTTP_OK);
-        //assert that we are not connected.
-        static::assertSame("Modifier", $crawler->filter('body > div:nth-child(2) > div:nth-child(4) > div > div > form > button')->text());
-
-        return $client;
+        static::assertSame("Modifier User1", $crawler->filter('h1')->text());
     }
 }
