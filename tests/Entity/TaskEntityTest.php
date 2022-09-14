@@ -104,7 +104,6 @@ class TaskEntityTest extends KernelTestCase
         static::assertEquals(true, $task->isDone());
     }
 
-
     public function testGetUserFromTask(): void
     {
         $task = new Task();
@@ -114,17 +113,5 @@ class TaskEntityTest extends KernelTestCase
 
         self::assertEquals($user_id, $task->getAuthor());
     }
-
-//    public function testGetSetNullContent()
-//    {
-//        $task = new Task();
-//        $content = null;
-//        $task->setContent($content);
-//
-//        $this->expectError();
-//
-////        $this->assertEquals($content, $task->getContent());
-//    }
-
 
 }

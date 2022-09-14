@@ -73,10 +73,4 @@ class PageControllerTest extends WebTestCase
         return $client;
     }
 
-//    public function testBadCreateUser()
-//    {
-//
-//    }
-
-
 }

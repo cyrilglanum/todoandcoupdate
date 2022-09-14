@@ -12,30 +12,6 @@ class UserRepositoryTest extends WebTestCase
 {
     use FixturesTrait;
 
-//    public function testCreateUser()
-//    {
-//        $client = static::createClient();
-//        $userRepository = $this->getContainer()->get(UserRepository::class);
-//
-//        // retrieve the test user
-//        $testUser = $userRepository->findOneByEmail('email1@test.com');
-//
-//        // simulate $testUser being logged in
-//        $client->loginUser($testUser);
-//
-//
-//
-////        Exemple test fonctionnel
-////        $client->request('GET', '/task_list');
-////        $this->assertResponseIsSuccessful();
-////        $this->assertSelectorTextContains('a', 'To Do List app');
-//    }
-
-//    public function testConnexion()
-//    {
-//
-//    }
-
     public function testCount()
     {
        self::bootKernel();

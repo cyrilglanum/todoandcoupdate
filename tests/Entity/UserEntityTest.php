@@ -103,19 +103,4 @@ class UserEntityTest extends KernelTestCase
 
     }
 
-//    public function testGetTask():void
-//    {
-//        $value = new Task();
-//
-////        $response = $this->user->addTask($task);
-//
-//        dd($this->user->getTasks());
-//        if($this->user->getTasks())
-//
-//        self::assertInstanceOf(User::class, $response);
-//        self::assertContains($value, $this->user->getPassword());
-//
-//    }
-
-
 }

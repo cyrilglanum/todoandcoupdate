@@ -120,5 +120,22 @@ class UserControllerTest extends WebTestCase
 
         self::assertResponseStatusCodeSame(Response::HTTP_OK);
         static::assertSame("Modifier User1", $crawler->filter('h1')->text());
+
+        static::assertSame(1, $crawler->filter('input[name="user_edit[username]"]')->count());
+        static::assertSame(3, $crawler->filter('input[name="user_edit[roles][]"]')->count());
+
+        $form = $crawler->selectButton('Modifier')->form();
+
+        $form['user_edit[username]'] = 'Username';
+//        $form['user_edit[roles][]'] = 'ROLE_USER';
+        $client->submit($form);
+
+        self::assertResponseStatusCodeSame(Response::HTTP_FOUND);
+
+        $client->followRedirect();
+
+        self::assertSelectorExists('.alert.alert-success');
+        self::assertSelectorTextContains('div.alert.alert-success', "Superbe ! L'utilisateur a bien été modifié.");
     }
+
 }

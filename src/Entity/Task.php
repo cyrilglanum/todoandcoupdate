@@ -46,7 +46,6 @@ class Task
 
     /**
      * @ORM\Column(type="boolean")
-     * @Assert\NotBlank()
      */
     private $isDone;
 
