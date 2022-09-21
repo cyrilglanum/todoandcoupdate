@@ -41,6 +41,11 @@ Pour comprendre tout le process :
 - le système de sécurité intercepte la requête, contrôle les informations et authentifie l'utilisateur
 si elles sont correctes ou renvoie sur le formulaire de login sinon.
 
+
+Les utilisateurs sont stockés ensuite dans le système d'authentification de Symfony Auth. Ils sont utilisables en utilisant le code 
+
+``` $this->getUser()``` dans les controllers .
+
 #### Roles
 
 [Role_user] -> Ce rôle permettra de naviguer sur le site étant authentifié et pourra crééer, modifier ses tâches

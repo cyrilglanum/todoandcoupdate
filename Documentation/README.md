@@ -53,13 +53,14 @@ Exemple Wamp
 		Options +Indexes +Includes +FollowSymLinks +MultiViews
 		AllowOverride All
 		Require local
-	</Directory>
+	</Directory>g
 </VirtualHost>
 ```
 
 #### Database
-[//]: # (TODO)
-[todoandco](bilemoapi.sql) 
+Créer la base de données "todoandco" et y insérer le fichier SQL ci-dessous.
+
+[todoandco](todoandco.sql) 
 
 
 ```bash
