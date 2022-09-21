@@ -59,8 +59,8 @@ class UserRepositoryTest extends WebTestCase
 
         $user = $this->createAndGetUser();
 
-        $this->assertEquals('test new title from task with author 4', $user->getTitle());
-        $this->assertEquals('New author id 6', $user->getContent());
-        $this->assertEquals(6, $user->getAuthor());
+        $this->assertEquals('test22@gmail.com', $user->getEmail());
+        $this->assertContains('ROLE_ADMIN', $user->getRoles());
+        $this->assertEquals('username de test', $user->getUsername());
     }
 }
