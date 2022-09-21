@@ -2,21 +2,65 @@
 
 namespace App\Tests\Repository;
 
-use App\DataFixtures\UserFixtures;
-use App\Repository\UserRepository;
-use Liip\TestFixturesBundle\Test\FixturesTrait;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class UserRepositoryTest extends WebTestCase
 {
-    use FixturesTrait;
+   /**
+     * @var \Doctrine\ORM\EntityManager
+     */
+    private $entityManager;
 
-    public function testCount()
+    protected function setUp(): void
     {
-       self::bootKernel();
-       $users = self::$container->get(UserRepository::class)->count([]);
-       $this->assertEquals(10,$users);
+        $kernel = self::bootKernel();
+
+        $this->entityManager = $kernel->getContainer()
+            ->get('doctrine')
+            ->getManager();
     }
 
+
+    public function createAndGetUser():User
+    {
+        $em = $this->entityManager;
+        $user = new User();
+        $user->setEmail('test22@gmail.com');
+        $user->setRoles(['ROLE_ADMIN','ROLE_USER']);
+        $user->setPassword('passwordTest');
+        $user->setUsername('username de test');
+
+        $em->persist($user);
+        $em->flush();
+
+        $userWithUsernameJustCreated = $em->getRepository(User::class)->findOneBy(['username' => 'username de test']);
+
+        return $userWithUsernameJustCreated ;
+    }
+
+    public function testAddUser()
+    {
+        self::bootKernel();
+
+        $user = $this->createAndGetUser();
+
+        $this->assertEquals('test22@gmail.com', $user->getEmail());
+        $this->assertContains('ROLE_ADMIN', $user->getRoles());
+        $this->assertEquals("username de test", $user->getUsername());
+    }
+
+    public function testEditUser()
+    {
+        self::bootKernel();
+        $em = $this->entityManager;
+        $userDoesnotExist = $em->getRepository(User::class)->find(10000);
+        $this->assertEquals(null, $userDoesnotExist);
+
+        $user = $this->createAndGetUser();
+
+        $this->assertEquals('test new title from task with author 4', $user->getTitle());
+        $this->assertEquals('New author id 6', $user->getContent());
+        $this->assertEquals(6, $user->getAuthor());
+    }
 }

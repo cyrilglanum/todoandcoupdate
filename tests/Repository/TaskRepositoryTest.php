@@ -2,107 +2,90 @@
 
 namespace App\Tests\Repository;
 
-use App\DataFixtures\UserFixtures;
 use App\Entity\Task;
 use App\Repository\TaskRepository;
-use App\Repository\UserRepository;
-use Doctrine\Persistence\ManagerRegistry;
-use Doctrine\Persistence\ObjectManager;
-use Doctrine\Persistence\ObjectRepository;
-use Liip\TestFixturesBundle\Test\FixturesTrait;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class TaskRepositoryTest extends KernelTestCase
 {
-    use FixturesTrait;
 
-    public function getEntity()
+    /**
+     * @var \Doctrine\ORM\EntityManager
+     */
+    private $entityManager;
+
+    protected function setUp(): void
     {
-        $task = new Task();
+        $kernel = self::bootKernel();
 
-        $task->setContent('TEST AJOUT ENTITY TASK');
-        $task->setAuthor(1);
-        $task->setTitle("test ajout");
-        $task->setIsDone(0);
-        $task->setCreatedAt(new \DateTimeImmutable());
-
-        return $task;
+        $this->entityManager = $kernel->getContainer()
+            ->get('doctrine')
+            ->getManager();
     }
 
-    public function testCount()
-    {
-        self::bootKernel();
-        $tasks = self::$container->get(TaskRepository::class)->count([]);
-        $this->assertEquals(11, $tasks);
-    }
 
-    //with fixture tests
-    public function testGetGoodTasksWithAuthorIdValues()
+    public function testAddTask()
     {
         self::bootKernel();
 
-        $tasks = self::$container->get(TaskRepository::class)->findAll();
-
-        foreach ($tasks as $task) {
-            $this->assertMatchesRegularExpression('/' . $task->getAuthor() . '/', $task->getContent());
-            $this->assertMatchesRegularExpression('/' . $task->getAuthor() . '/', $task->getTitle());
-            $this->assertMatchesRegularExpression('/@/', $task->getTitle());
-            $this->assertInstanceOf(\DateTimeImmutable::class, $task->getCreatedAt());
-            $this->assertInstanceOf(Task::class, $task);
-        }
-    }
-
-    public function testValidEntity()
-    {
+        $em = $this->entityManager;
         $task = new Task();
-
+        $task->setAuthor(4);
+        $task->setTitle('test title');
+        $task->setContent('content');
         $task->setCreatedAt(new \DateTimeImmutable('now'));
-        $task->setIsDone(0);
-        $task->setContent('Test de content tâche');
-        $task->setTitle('Test de title tâche');
-        $task->setAuthor(21);
+        $task->setIsDone(false);
 
+        $em->persist($task);
+        $em->flush();
+
+//        $tasks = self::$container->get(TaskRepository::class)->count([]);
+        $taskWithTitleJustCreated = $em->getRepository(Task::class)->findOneBy(['title' => 'test title']);
+
+        $this->assertEquals('test title', $taskWithTitleJustCreated->getTitle());
+        $this->assertEquals('content', $taskWithTitleJustCreated->getContent());
+        $this->assertEquals(4, $taskWithTitleJustCreated->getAuthor());
+    }
+
+    public function testEditTask()
+    {
         self::bootKernel();
+        $em = $this->entityManager;
+        $taskDoesnotExist = $em->getRepository(Task::class)->find(6);
+        $this->assertEquals(null, $taskDoesnotExist);
+        $task = $em->getRepository(Task::class)->find(12);
+        $this->assertInstanceOf(Task::class, $task);
+        $this->assertEquals(4, $task->getAuthor());
 
-        $error = self::$container->get('validator')->validate($task);
-        $this->assertCount(0, $error);
+        $task->setAuthor(6);
+        $task->setTitle('test new title from task with author 4');
+        $task->setContent('New author id 6');
+        $task->setCreatedAt(new \DateTimeImmutable('now'));
+        $task->setIsDone(1);
+
+        $em->persist($task);
+        $em->flush();
+
+        $taskWithTitleJustCreated = $em->getRepository(Task::class)->findOneBy(['title' => 'test new title from task with author 4']);
+
+        $this->assertEquals('test new title from task with author 4', $taskWithTitleJustCreated->getTitle());
+        $this->assertEquals('New author id 6', $taskWithTitleJustCreated->getContent());
+        $this->assertEquals(6, $taskWithTitleJustCreated->getAuthor());
     }
 
-    public function testAuthorTask()
-    {
-        $task = new Task();
-
-        $task->setAuthor(21);
-        $this->assertEquals(21, $task->getAuthor());
-    }
-
-    public function testCreatedAtTask(): void
-    {
-        $value = new \DateTimeImmutable('now');
-
-        $task = new Task();
-        $task->setCreatedAt($value);
-
-        self::assertEquals($value, $task->getCreatedAt());
-    }
-
-    public function testSetTitleTask(): void
-    {
-        $task = new Task();
-        $task->setTitle('Title tâche');
-
-        self::assertEquals('Title tâche', $task->getTitle());
-    }
-
-    public function testSetContentTask(): void
-    {
-        $task = new Task();
-        $task->setContent('Content tâche');
-
-        self::assertEquals('Content tâche', $task->getContent());
-    }
-
-
+    //not working cause detached entity..
+//    public function testRemoveTask()
+//    {
+//        self::bootKernel();
+//        $em = $this->entityManager;
+//
+//        $task = $em->getRepository(Task::class)->find(18);
+//        $this->assertInstanceOf(Task::class, $task);
+////        $em->merge($task);
+//        $em->remove($task);
+//        $em->flush();
+//
+//        $this->assertNull($task);
+//    }
 
 }
