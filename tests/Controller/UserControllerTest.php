@@ -122,7 +122,7 @@ class UserControllerTest extends WebTestCase
         static::assertSame("Modifier User1", $crawler->filter('h1')->text());
 
         static::assertSame(1, $crawler->filter('input[name="user_edit[username]"]')->count());
-        static::assertSame(3, $crawler->filter('input[name="user_edit[roles][]"]')->count());
+        static::assertSame(2, $crawler->filter('input[name="user_edit[roles][]"]')->count());
 
         $form = $crawler->selectButton('Modifier')->form();
 

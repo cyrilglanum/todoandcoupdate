@@ -74,18 +74,31 @@ class TaskRepositoryTest extends KernelTestCase
     }
 
     //not working cause detached entity..
-//    public function testRemoveTask()
-//    {
-//        self::bootKernel();
-//        $em = $this->entityManager;
-//
+    public function testRemoveTask()
+    {
+        self::bootKernel();
+        $em = $this->entityManager;
 //        $task = $em->getRepository(Task::class)->find(18);
-//        $this->assertInstanceOf(Task::class, $task);
-////        $em->merge($task);
-//        $em->remove($task);
-//        $em->flush();
-//
-//        $this->assertNull($task);
-//    }
+
+        $task = new Task();
+
+        $task->setTitle("test");
+        $task->setContent("test");
+        $task->setAuthor(6);
+        $task->setCreatedAt(new \DateTimeImmutable('now'));
+        $task->setIsDone(0);
+
+        $em->persist($task);
+        $em->flush();
+
+        $taskId = $task->getId();
+
+        $em->remove($task);
+        $em->flush();
+
+        $taskToCheck = $em->getRepository(Task::class)->find($taskId);
+
+        $this->assertNull($taskToCheck);
+    }
 
 }

@@ -58,7 +58,7 @@ class PageControllerTest extends WebTestCase
         static::assertSame("Formulaire utilisateur", $crawler->filter('h1')->text());
         static::assertSame(1, $crawler->filter('input[name="user[username]"]')->count());
         static::assertSame(1, $crawler->filter('input[name="user[email]"]')->count());
-        static::assertSame(3, $crawler->filter('input[name="user[roles][]"]')->count());
+        static::assertSame(2, $crawler->filter('input[name="user[roles][]"]')->count());
         static::assertSame(1, $crawler->filter('input[name="user[password][first]"]')->count());
         static::assertSame(1, $crawler->filter('input[name="user[password][second]"]')->count());
 
