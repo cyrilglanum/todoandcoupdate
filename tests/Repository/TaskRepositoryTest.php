@@ -53,7 +53,7 @@ class TaskRepositoryTest extends KernelTestCase
         $em = $this->entityManager;
         $taskDoesnotExist = $em->getRepository(Task::class)->find(6);
         $this->assertEquals(null, $taskDoesnotExist);
-        $task = $em->getRepository(Task::class)->find(12);
+        $task = $em->getRepository(Task::class)->find(3545);
         $this->assertInstanceOf(Task::class, $task);
         $this->assertEquals(4, $task->getAuthor());
 

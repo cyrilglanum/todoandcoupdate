@@ -62,6 +62,17 @@ Créer la base de données "todoandco" et y insérer le fichier SQL ci-dessous.
 
 [todoandco](todoandco.sql) 
 
+ou lancer les fixtures avec la commande 
+
+```
+php bin/console doctrine:fixtures:load
+```
+
+#### Database de test PHPunit
+Créer la base de données "todoandco_test" et y insérer le fichier SQL ci-dessous.
+
+[todoandco_test](todoandco_test.sql) 
+
 
 ```bash
 Importer le fichier SQL ci-dessus dans la base de données pour importer 

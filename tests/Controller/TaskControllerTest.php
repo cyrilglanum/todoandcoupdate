@@ -21,7 +21,7 @@ class TaskControllerTest extends WebTestCase
         static::assertSame(1, $crawler->filter('input[name="password"]')->count());
 
         $form = $crawler->selectButton('Se connecter')->form();
-        $form['email'] = 'email1@test.com';
+        $form['email'] = 'utilisateur@glanum.com';
         $form['password'] = 'aaaa';
 
         $client->submit($form);
@@ -90,7 +90,7 @@ class TaskControllerTest extends WebTestCase
         static::assertSame(1, $crawler->filter('input[name="password"]')->count());
 
         $form = $crawler->selectButton('Se connecter')->form();
-        $form['email'] = 'email1@test.com';
+        $form['email'] = 'utilisateur@glanum.com';
         $form['password'] = 'aaaa';
 
         $client->submit($form);
@@ -125,7 +125,7 @@ class TaskControllerTest extends WebTestCase
         static::assertSame(1, $crawler->filter('input[name="password"]')->count());
 
         $form = $crawler->selectButton('Se connecter')->form();
-        $form['email'] = 'cyril@glanum.com';
+        $form['email'] = 'utilisateur@glanum.com';
         $form['password'] = 'aaaa';
 
         $client->submit($form);
@@ -162,7 +162,7 @@ class TaskControllerTest extends WebTestCase
         static::assertSame(1, $crawler->filter('input[name="password"]')->count());
 
         $form = $crawler->selectButton('Se connecter')->form();
-        $form['email'] = 'cyril@glanum.com';
+        $form['email'] = 'utilisateur@glanum.com';
         $form['password'] = 'aaaa';
 
         $client->submit($form);
@@ -178,7 +178,7 @@ class TaskControllerTest extends WebTestCase
 
         static::assertSelectorExists('body > div:nth-child(2) > div:nth-child(4) > div > div > div:nth-child(2) > div > div.caption > h4:nth-child(2) > a');
 
-        $link = $crawler->selectLink('email1@test.com')->link();
+        $link = $crawler->selectLink('Tâche 2')->link();
         //deconnexion
         $crawler = $client->click($link);
 

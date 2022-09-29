@@ -59,7 +59,7 @@ class UserControllerTest extends WebTestCase
         static::assertSame(1, $crawler->filter('input[name="password"]')->count());
         //Ajout des valeurs dans le formulaire du bouton de connexion
         $form = $crawler->selectButton('Se connecter')->form();
-        $form['email'] = 'email1@test.com';
+        $form['email'] = 'utilisateur@glanum.com';
         $form['password'] = 'aaaa';
         //Soumission du formulaire
         $client->submit($form);
@@ -119,7 +119,7 @@ class UserControllerTest extends WebTestCase
         $crawler = $client->click($link);
 
         self::assertResponseStatusCodeSame(Response::HTTP_OK);
-        static::assertSame("Modifier User1", $crawler->filter('h1')->text());
+        static::assertSame("Modifier User2", $crawler->filter('h1')->text());
 
         static::assertSame(1, $crawler->filter('input[name="user_edit[username]"]')->count());
         static::assertSame(2, $crawler->filter('input[name="user_edit[roles][]"]')->count());
