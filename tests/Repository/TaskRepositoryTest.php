@@ -23,24 +23,27 @@ class TaskRepositoryTest extends KernelTestCase
             ->getManager();
     }
 
-
-    public function testAddTask()
+    public function createAndGetTask(): Task
     {
-        self::bootKernel();
-
         $em = $this->entityManager;
         $task = new Task();
         $task->setAuthor(4);
         $task->setTitle('test title');
         $task->setContent('content');
         $task->setCreatedAt(new \DateTimeImmutable('now'));
-        $task->setIsDone(false);
+        $task->setIsDone(0);
 
         $em->persist($task);
         $em->flush();
 
-//        $tasks = self::$container->get(TaskRepository::class)->count([]);
-        $taskWithTitleJustCreated = $em->getRepository(Task::class)->findOneBy(['title' => 'test title']);
+        return $em->getRepository(Task::class)->findOneBy(['createdAt' => $task->getCreatedAt()]);
+    }
+
+    public function testAddTask()
+    {
+        self::bootKernel();
+
+        $taskWithTitleJustCreated = $this->createAndGetTask();
 
         $this->assertEquals('test title', $taskWithTitleJustCreated->getTitle());
         $this->assertEquals('content', $taskWithTitleJustCreated->getContent());

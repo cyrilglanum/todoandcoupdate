@@ -21,25 +21,6 @@ class UserEntityTest extends KernelTestCase
 
         $this->user = new User();
     }
-//
-//    public function testUserEntityIsValid(): void
-//    {
-//        $user = new User();
-//
-//        $user->setEmail(self::VALID_EMAIL_VALUE);
-//        $user->setPassword(self::VALID_PASSWORD_VALUE);
-//
-//        $this->validator->getValidationErrors($user, 0);
-//    }
-//
-//    public function getValidationErrors(User $user, int $numberOfExpectedErrors): ConstraintViolationList
-//    {
-//        $errors = $this->validator->validate($user);
-//
-//        $this->assertCount($numberOfExpectedErrors, $errors);
-//
-//        return $errors;
-//    }
 
     public function testValidEntity()
     {
