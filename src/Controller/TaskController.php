@@ -2,10 +2,11 @@
 
 namespace App\Controller;
 
-
 use App\Entity\Task;
 use App\Form\TaskType;
 use Doctrine\Persistence\ManagerRegistry;
+use Exception;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -47,7 +48,7 @@ class TaskController extends AbstractController
             $task->setContent($request->request->get('task')['content']);
             $task->setCreatedAt(new \DateTimeImmutable('now'));
             $task->setIsDone(false);
-            
+
             $em->persist($task);
             $em->flush();
 
@@ -60,11 +61,11 @@ class TaskController extends AbstractController
     }
 
     /**
+     * @Cache(expires="tomorrow", public=true)
      * @Route("/task_list", name="task_list")
      */
     public function taskList()
     {
-
         $tasks = $this->doctrine->getRepository(Task::class)->findBy(['isDone' => '0']);
 
         return $this->render('task/list.html.twig', ['tasks' => $tasks]);
@@ -73,14 +74,14 @@ class TaskController extends AbstractController
     /**
      * @Route("/tasks/{id}/edit", name="task_edit")
      */
-    public function taskEdit(Request $request,Task $id)
+    public function taskEdit(Request $request, Task $id)
     {
 
         $form = $this->createForm(TaskType::class, $id);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            
+
             $id->setTitle($request->request->get('task')['title']);
             $id->setContent($request->request->get('task')['content']);
             $id->setCreatedAt(new \DateTimeImmutable('now'));
@@ -122,10 +123,15 @@ class TaskController extends AbstractController
     public function deleteTaskAction(Task $id)
     {
         $em = $this->doctrine->getManager();
-        $em->remove($id);
-        $em->flush();
 
-        $this->addFlash('success', 'La tâche a bien été supprimée.');
+        if ($id->getAuthor() === $this->getUser() || in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
+            $em->remove($id);
+            $em->flush();
+
+            $this->addFlash('success', 'La tâche a bien été supprimée.');
+        }
+
+        $this->addFlash('error', 'Vous n\'êtes pas autorisé à supprimer la tâche.');
 
         return $this->redirectToRoute('task_list');
     }

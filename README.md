@@ -6,12 +6,14 @@ Symfony.
 
 ## Sommaire documentation sur le projet
 
-[Documentation roles](Roles.md)
+[Documentation roles](Documentation/Roles.md)
 
 ### Documentation Technique
 
-[Documentation technique](Documentation_technique.md)
+[Documentation technique](Documentation/Documentation_technique.md)
 
+### Contribution
+[Contribution](Documentation/Contribution.md)
 ## Local
 
 #### Cloner le projet
@@ -60,7 +62,7 @@ Exemple Wamp
 #### Database
 Créer la base de données "todoandco" et y insérer le fichier SQL ci-dessous.
 
-[todoandco](todoandco.sql) 
+[todoandco](Documentation/todoandco.sql) 
 
 ou lancer les fixtures avec la commande 
 
@@ -71,7 +73,7 @@ php bin/console doctrine:fixtures:load
 #### Database de test PHPunit
 Créer la base de données "todoandco_test" et y insérer le fichier SQL ci-dessous.
 
-[todoandco_test](todoandco_test.sql) 
+[todoandco_test](Documentation/todoandco_test.sql) 
 
 
 ```bash

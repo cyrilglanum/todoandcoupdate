@@ -31,7 +31,7 @@ Il a remplacé le système d'authentification classique de la documentation car 
 
 ```cf : fonction authenticate -> src/Security/AppAuthenticator.php```
 
-#### Process d'authentification
+### Process d'authentification
 
 Pour comprendre tout le process :
 - l'utilisateur essaye d'accéder à une ressource protégée
@@ -46,17 +46,25 @@ Les utilisateurs sont stockés ensuite dans le système d'authentification de Sy
 
 ``` $this->getUser()``` dans les controllers .
 
-#### Roles
+### Roles
 
 [Role_user] -> Ce rôle permettra de naviguer sur le site étant authentifié et pourra crééer, modifier ses tâches
 
 [Role_admin] -> Ce rôle aura tous les droits entre la navigation, la vérification et pourra bien sûr
 modifier, supprimer n'importe quelle tâche. 
 
-### Process d'amélioration de l'application
+### Tests unitaires, fonctionnels et couverture de code
+
 
 Les tests unitaires et fonctionnels ont été mis en place dans le dossier ```test```, veillez à continuer à implémenter les tests
 pour avoir une application fonctionnelle et sure vis à vis du taux de couverture de code.
+
+Pour tous les fichiers de couverture de code, ils sont disponible dans le dossier ``` public/test-coverage```
+
+### Issues, organisation
+
+https://trello.com/b/qxSHvsP1/todoandco
+
 
 
 

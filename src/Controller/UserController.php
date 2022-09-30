@@ -36,8 +36,8 @@ class UserController extends AbstractController
             $roles = $this->getUser()->getRoles();
 
             $admin = false;
-            foreach ($roles as $role){
-                if(str_contains('ROLE_ADMIN', $role)){
+            foreach ($roles as $role) {
+                if (str_contains('ROLE_ADMIN', $role)) {
                     $admin = true;
                 }
             }
@@ -49,7 +49,7 @@ class UserController extends AbstractController
                     $users]);
             }
         }
-        
+
         return $this->render('default/index.html.twig');
     }
 
@@ -82,6 +82,32 @@ class UserController extends AbstractController
         }
 
         return $this->render('user/edit.html.twig', ['form' => $form->createView(), 'user' => $user]);
+    }
+
+    /**
+     * @Route("/user/delete/{id}", name="user_delete")
+     */
+    public function deleteAction($id)
+    {
+        $em = $this->doctrine->getManager();
+        $user = $this->doctrine->getRepository(User::class)->find($id);
+
+        if (!$user) {
+            $users = $em->getRepository(User::class)->findAll();
+
+            return $this->render('user/list.html.twig', ['users' => $users]);
+        }
+
+        if($this->getUser() !== null ){
+            if (in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
+                $em->remove($id);
+                $em->flush();
+
+                $this->addFlash('success', 'La tâche a bien été supprimée.');
+            }
+        }
+
+        return $this->render('user/list.html.twig', ['users' => $em->getRepository(User::class)->findAll()]);
     }
 
 }
