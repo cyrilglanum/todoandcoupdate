@@ -63,4 +63,30 @@ class UserRepositoryTest extends WebTestCase
         $this->assertContains('ROLE_ADMIN', $user->getRoles());
         $this->assertEquals('username de test', $user->getUsername());
     }
+
+     //not working cause detached entity..
+    public function testRemoveUser()
+    {
+        self::bootKernel();
+        $em = $this->entityManager;
+
+        $user = new User();
+
+        $user->setUsername("userToDelete");
+        $user->setPassword("test");
+        $user->setRoles(['ROLE_ADMIN','ROLE_USER']);
+        $user->setEmail("userToDelete@gmail.com");
+
+        $em->persist($user);
+        $em->flush();
+
+        $userId = $user->getId();
+
+        $em->remove($user);
+        $em->flush();
+
+        $userToCheck = $em->getRepository(User::class)->find($userId);
+
+        $this->assertNull($userToCheck);
+    }
 }
