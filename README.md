@@ -44,7 +44,9 @@ Symfony.
 ```
 
 ## Vhosts
+
 Exemple Wamp
+
 ```
 #
 <VirtualHost *:80>
@@ -58,7 +60,8 @@ Exemple Wamp
 </VirtualHost>
 ```
 
-#### Database
+### Database
+
 Créer la base de données "todoandco" et y insérer le fichier SQL ci-dessous.
 
 [todoandco - todoandco.sql](Documentation/todoandco_sql_files.zip) 
@@ -69,14 +72,12 @@ ou lancer les fixtures avec la commande
 php bin/console doctrine:fixtures:load
 ```
 
-#### Database de test PHPunit
+### Database de test PHPunit
 Créer la base de données "todoandco_test" et y insérer le fichier SQL ci-dessous.
 
 [todoandco_test - todoandco_test.sql](Documentation/todoandco_sql_files.zip) 
-
 
 ```bash
 Importer le fichier SQL ci-dessus dans la base de données pour importer 
 toutes les données de test.
 ```
-
