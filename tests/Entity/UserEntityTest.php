@@ -22,27 +22,37 @@ class UserEntityTest extends KernelTestCase
         $this->user = new User();
     }
 
+    public function getEntity():User
+    {
+        $user = new User();
+
+        $user->setEmail('test@glanum.com');
+        $user->setUsername('flaski');
+        $user->setRoles(["ROLE_USER"]);
+        $user->setPassword('password');
+
+        return $user;
+    }
+
     public function testValidEntity()
     {
-        $task = new User();
+        $user = new User();
 
-        $task->setEmail('test@glanum.com');
-        $task->setUsername('flaski');
-        $task->setRoles(["ROLE_USER"]);
-        $task->setPassword('password');
+        $user->setEmail('test@glanum.com');
+        $user->setUsername('flaski');
+        $user->setRoles(["ROLE_USER"]);
+        $user->setPassword('password');
         self::bootKernel();
 
-        $error = self::$container->get('validator')->validate($task);
+        $error = self::$container->get('validator')->validate($user);
         $this->assertCount(0, $error);
     }
 
-    public function testGetSetUser()
+    public function testGetUser()
     {
-        $task = new User();
-        $content = "cyrilg@gmail.com";
+        $user = $this->getEntity();
 
-        $task->setEmail($content);
-        $this->assertEquals("cyrilg@gmail.com", $task->getEmail());
+        $this->assertEquals("test@glanum.com", $user->getEmail());
     }
 
     public function testSetEmail(): void

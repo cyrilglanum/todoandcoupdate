@@ -21,6 +21,7 @@ class TaskEntityTest extends KernelTestCase
 
         return $task;
     }
+
     public function testValidEntity()
     {
         $task = $this->getEntity();
