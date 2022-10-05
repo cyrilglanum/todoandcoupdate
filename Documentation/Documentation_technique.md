@@ -1,4 +1,3 @@
-
 # Documentation technique Todo&Co
 
 ### Mise en place de la migration
@@ -34,11 +33,11 @@ Il a remplacé le système d'authentification classique de la documentation car 
 ### Process d'authentification
 
 Pour comprendre tout le process :
-- l'utilisateur essaye d'accéder à une ressource protégée
-- Le firewall initie un process d'authentication en redirigeant l'utilisateur sur le formulaire de login
-- la page login est rendue à l'écran
-- L'utilisateur soumet ses informations
-- le système de sécurité intercepte la requête, contrôle les informations et authentifie l'utilisateur
+  - l'utilisateur essaye d'accéder à une ressource protégée
+  - Le firewall initie un process d'authentication en redirigeant l'utilisateur sur le formulaire de login
+  - la page login est rendue à l'écran
+  - L'utilisateur soumet ses informations
+  - le système de sécurité intercepte la requête, contrôle les informations et authentifie l'utilisateur
 si elles sont correctes ou renvoie sur le formulaire de login sinon.
 
 

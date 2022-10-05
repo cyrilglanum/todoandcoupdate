@@ -24,7 +24,7 @@ class UserController extends AbstractController
     /**
      * @Route("/users", name="user_list")
      */
-    public function listAction(Request $request)
+    public function listAction()
     {
         $user = $this->getUser();
 
