@@ -34,12 +34,15 @@ Il a remplacé le système d'authentification classique de la documentation car 
 
 Pour comprendre tout le process :
 
+*   L'utilisateur essaye d'accéder à une ressource protégée.
 
-*   l'utilisateur essaye d'accéder à une ressource protégée
-*   Le firewall initie un process d'authentication en redirigeant l'utilisateur sur le formulaire de login
-*   la page login est rendue à l'écran
-*   L'utilisateur soumet ses informations
-*   le système de sécurité intercepte la requête, contrôle les informations et authentifie l'utilisateur
+*   Le firewall initie un process d'authentication en redirigeant l'utilisateur sur le formulaire de login.
+
+*   La page login est rendue à l'écran.
+
+*   L'utilisateur soumet ses informations.
+
+*   Le système de sécurité intercepte la requête, contrôle les informations et authentifie l'utilisateur
 si elles sont correctes ou renvoie sur le formulaire de login sinon.
 
 Les utilisateurs sont stockés ensuite dans le système d'authentification de Symfony Auth. Ils sont utilisables en utilisant le code 

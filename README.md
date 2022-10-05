@@ -15,28 +15,28 @@ Symfony.
 [Contribution](Documentation/Contribution.md)
 ## Local
 
-#### Cloner le projet
+### Cloner le projet
 
 ```bash
   git clone https://github.com/cyrilglanum/todoandco.git
 ```
 
-#### Aller sur le répertoire du projet
+### Aller sur le répertoire du projet
 
 ```bash
   cd todoandco
 ```
 
-#### Installer les dépendances
+### Installer les dépendances
 
 ```bash
   php composer install
 ```
 
-#### Configurer le fichier .env
+### Configurer le fichier .env
 
 
-#### Optimizing Configuration Loading
+### Optimizing Configuration Loading
 
 ```bash
   php bin/console clear:cache
