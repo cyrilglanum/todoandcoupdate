@@ -35,7 +35,6 @@ Symfony.
 
 ### Configurer le fichier .env
 
-
 ### Optimizing Configuration Loading
 
 ```bash

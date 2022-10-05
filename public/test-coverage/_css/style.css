@@ -29,7 +29,7 @@ body {
 }
 
 .table-borderless td , .table-borderless th{
- border: 0 !important;
+ border: 0;
 }
 
 .table tbody tr.covered-by-large-tests, li.covered-by-large-tests, tr.success, td.success, li.success, span.success {
