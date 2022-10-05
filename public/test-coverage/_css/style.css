@@ -28,7 +28,7 @@ body {
  margin-bottom: inherit;
 }
 
-.table-borderless th, .table-borderless td {
+.table-borderless td , .table-borderless th{
  border: 0 !important;
 }
 

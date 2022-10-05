@@ -48,7 +48,6 @@ Symfony.
 Exemple Wamp
 
 ```
-#
 <VirtualHost *:80>
 	ServerName local.todoandco.com
 	DocumentRoot "c:/wamp64/www/todoandco/public/"
