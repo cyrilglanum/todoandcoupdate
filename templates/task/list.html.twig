@@ -33,7 +33,7 @@
                         </h4>
                         <p>{{ task.content }}</p>
                     </div>
-                    <div>
+                    <div class ="buttons">
                         <form action="{{ path('task_toggle', {'id' : task.id }) }}">
                             {% if app.user is defined %}
                             {% if app.user is not null %}

@@ -1,0 +1,88 @@
+// css variables prefix
+$variable-prefix: qincaix-;
+
+//fonts
+$fonts-path: '../../fonts';
+$fonts-path-editor: '../wp-content/themes/highfive/assets/fonts';
+$icomoon-font-path: '#{$fonts-path}/icomoon/fonts';
+
+$Manrope: 'Manrope', sans-serif;
+$theme-fonts: (
+  'font-title': $Manrope,
+  'font-text': $Manrope
+);
+
+// breakpoints
+$breakpoints-list: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1400px,
+  fhd: 1900px
+);
+
+$grid-breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1440px,
+  fhd: 1900px
+);
+
+$container-max-widths: (
+  sm: 540px,
+  md: 720px,
+  lg: 960px,
+  xl: 1140px,
+  xxl: 1320px,
+  fhd: 1550px
+);
+
+$white: #fff;
+$black: #000;
+$color1: #009640;
+$color2: #0d562c;
+$color3: #1d1c1b;
+$color4: #b7b7b7;
+$color5: #e8c523;
+$color6: #d7d8d7;
+$color7: #ddd;
+$color8: #a5a4a4;
+$color9: #747474;
+$color10: #a1a0a0;
+
+$status1: #54bf43;
+$status2: #f4a30e;
+$status3: #f42d2a;
+$status4: #b3b3b3;
+
+$colors: (
+  'green-revolution': #00963f,
+  'crusoe': #0d562c,
+  'siyah-black': #1d1c1b,
+  'charmed-chalice': #a1a0a0,
+  'bank-vault': #707070,
+  'rainy-grey': #a5a4a4,
+  'fortress-grey': #b7b7b7,
+  'grey-shimmer': #d7d8d7,
+  'coronation': #ececec,
+  'steam': #ddd,
+  'lynx-white': #f9f9f9,
+  'moon-yellow': #e8c523,
+  'black': #000,
+  'white': #fff
+);
+
+$state-colors: (
+  'danger': $status3,
+  'warning': $status2,
+  'info': $status4,
+  'success': $status1,
+  'black': #000
+);
+
+$grid-gutter-width: 30px;
