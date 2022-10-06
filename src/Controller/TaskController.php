@@ -102,17 +102,25 @@ class TaskController extends AbstractController
     /**
      * @Route("/tasks/{id}/toggle", name="task_toggle")
      */
-    public function toggleTaskAction(Task $id)
+    public function toggleTaskAction(Task $id, ManagerRegistry $doctrine)
     {
         $id->toggle(!$id->isDone());
 
         $this->doctrine->getManager()->flush();
 
-        if ($id->isDone() === true) {
+        if ($id->isDone() === false) {
             $this->addFlash('success', sprintf('La tâche %s a bien été marquée comme faite.', $id->getTitle()));
-        } else {
-            $this->addFlash('success', sprintf('La tâche %s a bien été marquée comme non terminée.', $id->getTitle()));
+
+            $tasks = $doctrine->getManager()->getRepository(Task::class)->findBy(['isDone' => true]);
+            $user = $this->getUser();
+
+            return $this->render('task/list.html.twig', [
+                'tasks' => $tasks,
+                'user' => $user,
+            ]);
         }
+
+        $this->addFlash('success', sprintf('La tâche %s a bien été marquée comme non terminée.', $id->getTitle()));
 
         return $this->redirectToRoute('task_list');
     }
@@ -124,7 +132,7 @@ class TaskController extends AbstractController
     {
         $em = $this->doctrine->getManager();
 
-        if ($id->getAuthor() === $this->getUser() || in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
+        if ($id->getAuthor() === $this->getUser()->getId() || in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
             $em->remove($id);
             $em->flush();
 
