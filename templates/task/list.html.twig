@@ -8,73 +8,74 @@
     <div class="row" style="margin-top: 30px">
 
         <h3>Nombre de tâches : {{ tasks.getTotalItemCount }} </h3>
-        {% for task in tasks %}
+        <div class="container">
+            {% for task in tasks %}
 
-            <div class="col-sm-4 col-lg-4 col-md-4">
-                <div class="thumbnail">
-                    <div class="caption">
-                        <h4 class="pull-right">
-                            {% if task.isDone %}<span class="glyphicon glyphicon-ok"
-                                                      style="color: green"></span>{% else %}<span
-                                    class="glyphicon glyphicon-remove" style="color: red"></span>{% endif %}
-                        </h4>
-                        <h4>
+                <div class="col-sm-4 col-lg-4 col-md-4">
+                    <div class="thumbnail">
+                        <div class="caption">
+                            <h4 class="pull-right">
+                                {% if task.isDone %}<span class="glyphicon glyphicon-ok"
+                                                          style="color: green"></span>{% else %}<span
+                                        class="glyphicon glyphicon-remove" style="color: red"></span>{% endif %}
+                            </h4>
+                            <h4>
+                                {% if app.user is defined %}
+                                    {% if app.user is not null %}
+                                        {% if 'ROLE_ADMIN' in app.user.roles %}
+                                            <a href="{{ path('task_edit', {'id' : task.id }) }}"
+                                               class="titleTaskAdmin">{{ task.title }}</a>
+                                        {% elseif 'ROLE_ADMIN' not in app.user.roles and task.author != 6 and app.user.id == task.author %}
+                                            <a href="{{ path('task_edit', {'id' : task.id }) }}"
+                                               class="titleTaskUser">{{ task.title }}</a>
+                                        {% else %}
+                                            <span>{{ task.title }}</span>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endif %}
+                            </h4>
+                            <p>{{ task.content }}</p>
+                        </div>
+                        <div class="buttons">
+                            <form action="{{ path('task_toggle', {'id' : task.id }) }}">
+                                {% if app.user is defined %}
+                                {% if app.user is not null %}
+                                <button class="btn btn-success btn-sm pull-right"
+                                        style="margin-top : 20px;margin-bottom : 20px">
+                                    {% if not task.isDone %}
+                                        Marquer comme faite
+                                    {% else %}
+                                        Marquer non terminée
+                                    {% endif %}
+                                    {% endif %}
+                                    {% endif %}
+                                </button>
+                            </form>
+
                             {% if app.user is defined %}
                                 {% if app.user is not null %}
                                     {% if 'ROLE_ADMIN' in app.user.roles %}
-                                        <a href="{{ path('task_edit', {'id' : task.id }) }}"
-                                           class="titleTaskAdmin">{{ task.title }}</a>
+                                        <form action="{{ path('task_delete', {'id' : task.id }) }}">
+                                            <button class="btn btn-danger btn-sm pull-right"
+                                                    style="margin-bottom : 20px; margin-right : 15px; margin-top : 20px">
+                                                Supprimer
+                                            </button>
+                                        </form>
                                     {% elseif 'ROLE_ADMIN' not in app.user.roles and task.author != 6 and app.user.id == task.author %}
-                                        <a href="{{ path('task_edit', {'id' : task.id }) }}"
-                                           class="titleTaskUser">{{ task.title }}</a>
-                                    {% else %}
-                                        <span>{{ task.title }}</span>
+                                        <form action="{{ path('task_delete', {'id' : task.id }) }}">
+                                            <button class="btn btn-danger btn-sm pull-right"
+                                                    style="margin-bottom : 20px; margin-right : 15px; margin-top : 20px">
+                                                Supprimer
+                                            </button>
+                                        </form>
                                     {% endif %}
                                 {% endif %}
                             {% endif %}
-                        </h4>
-                        <p>{{ task.content }}</p>
-                    </div>
-                    <div class ="buttons">
-                        <form action="{{ path('task_toggle', {'id' : task.id }) }}">
-                            {% if app.user is defined %}
-                            {% if app.user is not null %}
-                            <button class="btn btn-success btn-sm pull-right"
-                                    style="margin-top : 20px;margin-bottom : 20px">
-                                {% if not task.isDone %}
-                                    Marquer comme faite
-                                {% else %}
-                                    Marquer non terminée
-                                {% endif %}
-                                {% endif %}
-                                {% endif %}
-                            </button>
-                        </form>
-
-                        {% if app.user is defined %}
-                            {% if app.user is not null %}
-                                {% if 'ROLE_ADMIN' in app.user.roles %}
-                                    <form action="{{ path('task_delete', {'id' : task.id }) }}">
-                                        <button class="btn btn-danger btn-sm pull-right"
-                                                style="margin-bottom : 20px; margin-right : 15px; margin-top : 20px">
-                                            Supprimer
-                                        </button>
-                                    </form>
-                                {% elseif 'ROLE_ADMIN' not in app.user.roles and task.author != 6 and app.user.id == task.author %}
-                                    <form action="{{ path('task_delete', {'id' : task.id }) }}">
-                                        <button class="btn btn-danger btn-sm pull-right"
-                                                style="margin-bottom : 20px; margin-right : 15px; margin-top : 20px">
-                                            Supprimer
-                                        </button>
-                                    </form>
-                                {% endif %}
-                            {% endif %}
-                        {% endif %}
+                        </div>
                     </div>
                 </div>
-            </div>
-        {% endfor %}
-
+            {% endfor %}
+        </div>
         <h3>{{ knp_pagination_render(tasks) }}</h3>
 
         {% if tasks is not defined %}

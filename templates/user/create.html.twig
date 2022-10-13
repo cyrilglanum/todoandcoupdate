@@ -6,13 +6,13 @@
 {% block body %}
     <div class="row">
         {{ form_start(form, {'action' : path('user_create')}) }}
-        <div class="col-md-6 form">Username <span style="color: red">*</span></div>
+        <div class="col-md-6 form">Identifiant <span style="color: red">*</span></div>
         <div class="col-md-6 form form-answer">{{ form_widget(form.username) }} </div>
         <div class="col-md-6 form">Email <span style="color: red">*</span></div>
         <div class="col-md-6 form form-answer">{{ form_widget(form.email) }} </div>
         <div class="col-md-6 form">Roles <span style="color: red">*</span></div>
         <div class="col-md-6 form">{{ form_widget(form.roles) }} </div>
-        <div class="col-md-6 form">Password</div>
+        <div class="col-md-6 form">Mot de passe</div>
         <div class="col-md-6 form form-answer">{{ form_widget(form.password) }} <span style="color: red">*</span></div>
         <button type="submit" class="btn btn-success pull-right">Ajouter</button>
         {{ form_end(form) }}
