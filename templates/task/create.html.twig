@@ -4,9 +4,9 @@
     <h3>Ajouter une tâche</h3>
     <div class="row">
         {{ form_start(form, {'action' : path('task_create')}) }}
-        <div class="col-md-6 form">Titre de la tâche</div>
+        <div class="col-md-6 form">Titre de la tâche <span style="color: red">*</span> </div>
         <div class="col-md-6 form form-answer">{{ form_widget(form.title) }} </div>
-        <div class="col-md-6 form">Contenu</div>
+        <div class="col-md-6 form">Contenu <span style="color: red">*</span></div>
         <div class="col-md-6 form form-answer">{{ form_widget(form.content) }} </div>
         <button type="submit" class="btn btn-success pull-right">Ajouter</button>
         {{ form_end(form) }}

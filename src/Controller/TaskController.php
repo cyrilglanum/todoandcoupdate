@@ -66,7 +66,7 @@ class TaskController extends AbstractController
      */
     public function taskList()
     {
-        $tasks = $this->doctrine->getRepository(Task::class)->findBy(['isDone' => '0']);
+        $tasks = $this->doctrine->getRepository(Task::class)->findBy(['isDone' => '0'], ['id' => 'DESC']);
 
         return $this->render('task/list.html.twig', ['tasks' => $tasks]);
     }
@@ -109,7 +109,7 @@ class TaskController extends AbstractController
         $this->doctrine->getManager()->flush();
 
         if ($id->isDone() === false) {
-            $this->addFlash('success', sprintf('La tâche %s a bien été marquée comme faite.', $id->getTitle()));
+            $this->addFlash('success', sprintf('La tâche %s a bien été comme non terminée.', $id->getTitle()));
 
             $tasks = $doctrine->getManager()->getRepository(Task::class)->findBy(['isDone' => true]);
             $user = $this->getUser();
@@ -120,7 +120,7 @@ class TaskController extends AbstractController
             ]);
         }
 
-        $this->addFlash('success', sprintf('La tâche %s a bien été marquée comme non terminée.', $id->getTitle()));
+        $this->addFlash('success', sprintf('La tâche %s a bien été marquée marquée comme faite.', $id->getTitle()));
 
         return $this->redirectToRoute('task_list');
     }
@@ -137,9 +137,9 @@ class TaskController extends AbstractController
             $em->flush();
 
             $this->addFlash('success', 'La tâche a bien été supprimée.');
+        } else {
+            $this->addFlash('error', 'Vous n\'êtes pas autorisé à supprimer la tâche.');
         }
-
-        $this->addFlash('error', 'Vous n\'êtes pas autorisé à supprimer la tâche.');
 
         return $this->redirectToRoute('task_list');
     }
@@ -149,7 +149,7 @@ class TaskController extends AbstractController
      */
     public function doneTaskAction(ManagerRegistry $doctrine)
     {
-        $tasks = $doctrine->getManager()->getRepository(Task::class)->findBy(['isDone' => true]);
+        $tasks = $doctrine->getManager()->getRepository(Task::class)->findBy(['isDone' => true], ['id' => 'DESC']);
         $user = $this->getUser();
 
         return $this->render('task/list.html.twig', [

@@ -87,7 +87,7 @@ class UserController extends AbstractController
     /**
      * @Route("/user/delete/{id}", name="user_delete")
      */
-    public function deleteAction($id)
+    public function deleteAction($id, ManagerRegistry $managerRegistry)
     {
         $em = $this->doctrine->getManager();
         $user = $this->doctrine->getRepository(User::class)->find($id);
@@ -100,10 +100,11 @@ class UserController extends AbstractController
 
         if($this->getUser() !== null ){
             if (in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
-                $em->remove($id);
+                $managerRegistry->getRepository(User::class)->remove($user);
+//                $em->getRepository(User::class)->remove($user);
                 $em->flush();
 
-                $this->addFlash('success', 'La tâche a bien été supprimée.');
+                $this->addFlash('success', 'L\'utilisateur a bien été supprimée.');
             }
         }
 
