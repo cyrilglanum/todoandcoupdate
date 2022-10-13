@@ -6,6 +6,8 @@
 {% block body %}
     <a href="{{ path('task_create') }}" class="btn btn-info pull-right">Créer une tâche</a><br>
     <div class="row" style="margin-top: 30px">
+
+        <h3>Nombre de tâches : {{ tasks.getTotalItemCount }} </h3>
         {% for task in tasks %}
 
             <div class="col-sm-4 col-lg-4 col-md-4">
@@ -72,6 +74,9 @@
                 </div>
             </div>
         {% endfor %}
+
+        <h3>{{ knp_pagination_render(tasks) }}</h3>
+
         {% if tasks is not defined %}
             <div class="alert alert-warning" role="alert">
                 Il n'y a pas encore de tâche enregistrée. <a href="{{ path('task_create') }}"

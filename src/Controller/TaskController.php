@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Task;
 use App\Form\TaskType;
+use App\Repository\TaskRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Exception;
+use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -61,14 +63,19 @@ class TaskController extends AbstractController
     }
 
     /**
-     * @Cache(expires="tomorrow", public=true)
      * @Route("/task_list", name="task_list")
      */
-    public function taskList()
+    public function taskList(PaginatorInterface $pager, Request $request)
     {
         $tasks = $this->doctrine->getRepository(Task::class)->findBy(['isDone' => '0'], ['id' => 'DESC']);
 
-        return $this->render('task/list.html.twig', ['tasks' => $tasks]);
+        $tasksPaginator = $pager->paginate(
+            $tasks,
+            $request->query->getInt('page', 1),
+            10
+        );
+
+        return $this->render('task/list.html.twig', ['tasks' => $tasksPaginator]);
     }
 
     /**
@@ -147,13 +154,19 @@ class TaskController extends AbstractController
     /**
      * @Route("/tasks/done", name="task_done")
      */
-    public function doneTaskAction(ManagerRegistry $doctrine)
+    public function doneTaskAction(ManagerRegistry $doctrine, PaginatorInterface $pager, Request $request)
     {
         $tasks = $doctrine->getManager()->getRepository(Task::class)->findBy(['isDone' => true], ['id' => 'DESC']);
         $user = $this->getUser();
 
+        $tasksPaginator = $pager->paginate(
+            $tasks,
+            $request->query->getInt('page', 1),
+            10
+        );
+
         return $this->render('task/list.html.twig', [
-            'tasks' => $tasks,
+            'tasks' => $tasksPaginator,
             'user' => $user,
         ]);
     }
