@@ -96,6 +96,8 @@ class TaskEntityTest extends KernelTestCase
         $user_id = 6;
         $task->setAuthor($user_id);
         static::assertIsInt($user_id, "actual value is Integer or not");
+        static::assertEquals($user_id, $task->getAuthor());
+
     }
 
     public function testIsDoneToggle()
