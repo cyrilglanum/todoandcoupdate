@@ -32,11 +32,10 @@ class Task
     private $title;
 
     /**
-     * @ORM\Column(type="integer", length=12)
-     * @Assert\NotBlank()
-     * @Regex("/\d+/")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="tasks")
+     * @ORM\JoinColumn(nullable=true)
      */
-    private $author_id;
+    private $user;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -68,12 +67,21 @@ class Task
 
     public function getAuthor()
     {
-        return $this->author_id;
+        return $this->user;
     }
 
-    public function setAuthor($author_id): self
+    public function getUser()
     {
-        $this->author_id = $author_id;
+        if($this->user === null){
+            return false;
+        }
+
+        return $this->user->getId();
+    }
+
+    public function setAuthor($user): self
+    {
+        $this->user = $user;
 
         return $this;
     }
@@ -126,7 +134,7 @@ class Task
 
 //    public function getUser()
 //    {
-//        $user = User::class->find($this->author_id);
+//        $user = User::class->find($this->user_id);
 //        if ($user) {
 //            return $user;
 //        }

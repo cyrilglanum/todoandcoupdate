@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserEditType;
 use App\Form\UserType;
+use App\Repository\UserRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,9 +17,10 @@ class UserController extends AbstractController
 {
     private $doctrine;
 
-    public function __construct(ManagerRegistry $doctrine)
+    public function __construct(ManagerRegistry $doctrine, UserRepository $userRepository)
     {
         $this->doctrine = $doctrine;
+        $this->userRepository = $userRepository;
     }
 
     /**
@@ -100,9 +102,7 @@ class UserController extends AbstractController
 
         if($this->getUser() !== null ){
             if (in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
-                $managerRegistry->getRepository(User::class)->remove($user);
-//                $em->getRepository(User::class)->remove($user);
-                $em->flush();
+                $this->userRepository->remove($user, true);
 
                 $this->addFlash('success', 'L\'utilisateur a bien été supprimée.');
             }

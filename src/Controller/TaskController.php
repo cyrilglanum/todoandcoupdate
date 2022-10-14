@@ -17,10 +17,12 @@ class TaskController extends AbstractController
 {
 
     private $doctrine;
+    private $taskRepository;
 
-    public function __construct(ManagerRegistry $doctrine)
+    public function __construct(ManagerRegistry $doctrine, TaskRepository $taskRepository)
     {
         $this->doctrine = $doctrine;
+        $this->taskRepository = $taskRepository;
     }
 
     /**
@@ -35,24 +37,21 @@ class TaskController extends AbstractController
         $task = new Task();
         $task->setIsDone(0);
         $task->setCreatedAt(new \DateTimeImmutable('now'));
-        $task->setAuthor($this->getUser()->getId());
+        $task->setAuthor($this->getUser());
 
         $form = $this->createForm(TaskType::class, $task);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->doctrine->getManager();
             $task = new Task();
-            if ($task->getAuthor() === null) {
-                $task->setAuthor($this->getUser()->getId());
-            }
+
+            $task->setAuthor($this->getUser());
             $task->setTitle($request->request->get('task')['title']);
             $task->setContent($request->request->get('task')['content']);
             $task->setCreatedAt(new \DateTimeImmutable('now'));
             $task->setIsDone(false);
 
-            $em->persist($task);
-            $em->flush();
+            $this->taskRepository->add($task, true);
 
             $this->addFlash('success', 'La tâche a été bien été ajoutée.');
 
@@ -137,11 +136,8 @@ class TaskController extends AbstractController
      */
     public function deleteTaskAction(Task $id)
     {
-        $em = $this->doctrine->getManager();
-
         if ($id->getAuthor() === $this->getUser()->getId() || in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
-            $em->remove($id);
-            $em->flush();
+            $this->taskRepository->remove($id, true);
 
             $this->addFlash('success', 'La tâche a bien été supprimée.');
         } else {

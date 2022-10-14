@@ -53,10 +53,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->id;
     }
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Task", mappedBy="user")
-     */
-    private $tasks;
+//    /**
+//     * @ORM\OneToMany(targetEntity="App\Entity\Task", mappedBy="user")
+//     * @ORM\JoinColumn(nullable=true)
+//     */
+//    private $tasks;
 
     /**
      * @deprecated since Symfony 5.3, use getUserIdentifier instead

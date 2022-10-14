@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Repository\UserRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,10 +17,12 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class SecurityController extends AbstractController
 {
     private $doctrine;
+    private $userRepository;
 
-    public function __construct(ManagerRegistry $doctrine)
+    public function __construct(ManagerRegistry $doctrine, UserRepository $userRepository)
     {
         $this->doctrine = $doctrine;
+        $this->userRepository = $userRepository;
     }
 
     /**
@@ -59,13 +62,11 @@ class SecurityController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->doctrine->getManager();
             $password = $passwordHasherConfig->hashPassword($user, $user->getPassword());
             $user->setPassword($password);
             $user->setRoles((array)($request->request->get('user')['roles']));
 
-            $em->persist($user);
-            $em->flush();
+            $this->userRepository->add($user, true);
 
             $this->addFlash('success', "L'utilisateur a bien été ajouté.");
 
