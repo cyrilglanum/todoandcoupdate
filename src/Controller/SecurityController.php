@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
-use Doctrine\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,12 +15,10 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
-    private $doctrine;
     private $userRepository;
 
-    public function __construct(ManagerRegistry $doctrine, UserRepository $userRepository)
+    public function __construct(UserRepository $userRepository)
     {
-        $this->doctrine = $doctrine;
         $this->userRepository = $userRepository;
     }
 

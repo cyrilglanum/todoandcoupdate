@@ -82,12 +82,11 @@ class TaskController extends AbstractController
      */
     public function taskEdit(Request $request, Task $id)
     {
-
         $form = $this->createForm(TaskType::class, $id);
 
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
 
+        if ($form->isSubmitted() && $form->isValid()) {
             $id->setTitle($request->request->get('task')['title']);
             $id->setContent($request->request->get('task')['content']);
             $id->setCreatedAt(new \DateTimeImmutable('now'));

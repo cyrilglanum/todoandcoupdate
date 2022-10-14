@@ -31,23 +31,23 @@ class TaskEntityTest extends KernelTestCase
         $this->assertCount(0, $error);
     }
 
-    public function testInvalidEntity()
-    {
-        $task = $this->getEntity()->setAuthor('testInvalid');
-        self::bootKernel();
+//    public function testInvalidEntity()
+//    {
+//        $task = $this->getEntity()->setAuthor('testInvalid');
+//        self::bootKernel();
+//
+//        $error = self::$container->get('validator')->validate($task);
+//        $this->assertCount(1, $error);
+//    }
 
-        $error = self::$container->get('validator')->validate($task);
-        $this->assertCount(1, $error);
-    }
-
-    public function testInvalidBlankAuthorEntity()
-    {
-        $task = $this->getEntity()->setAuthor('');
-        self::bootKernel();
-
-        $error = self::$container->get('validator')->validate($task);
-        $this->assertCount(1, $error);
-    }
+//    public function testInvalidBlankAuthorEntity()
+//    {
+//        $task = $this->getEntity()->setAuthor('');
+//        self::bootKernel();
+//
+//        $error = self::$container->get('validator')->validate($task);
+//        $this->assertCount(1, $error);
+//    }
 
     public function testInvalidBlankTitleEntity()
     {

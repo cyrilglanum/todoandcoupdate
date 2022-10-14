@@ -11,7 +11,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TaskType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, ? array $options)
+    public function buildForm(FormBuilderInterface $builder, ?array $options)
     {
         $builder
             ->add('title')
@@ -20,6 +20,9 @@ class TaskType extends AbstractType
                 "attr" => [
                     'class' => 'col-12 mb-3'
                 ],
+                'mapped' => false,
+                'required' => false,
+                'data' => true
 //                'data' => $options
             ]);
     }

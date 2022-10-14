@@ -3,6 +3,7 @@
 namespace App\Tests\Repository;
 
 use App\Entity\Task;
+use App\Entity\User;
 use App\Repository\TaskRepository;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
@@ -85,7 +86,7 @@ class TaskRepositoryTest extends KernelTestCase
 
         $task->setTitle("test");
         $task->setContent("test");
-        $task->setAuthor(6);
+        $task->setAuthor(null);
         $task->setCreatedAt(new \DateTimeImmutable('now'));
         $task->setIsDone(0);
 
