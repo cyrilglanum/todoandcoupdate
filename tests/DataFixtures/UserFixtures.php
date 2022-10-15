@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DataFixtures;
+namespace App\Tests\DataFixtures;
 
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -13,13 +13,13 @@ class UserFixtures extends Fixture
      */
     public function load(ObjectManager $manager): void
     {
-
+        dd("iic");
 
 //        for ($i = 1; $i <= 1; $i++) {
 //            $user = new User();
-//            $user->setUsername("Utilisateur");
-//            $user->setEmail("utilisateur@glanum.com");
-//            $user->setRoles(["ROLE_USER"]);
+//            $user->setUsername("UserAdmin");
+//            $user->setEmail("cyril@glanum.com");
+//            $user->setRoles(["ROLE_USER", "ROLE_ADMIN"]);
 ////            password : "aaaa"
 //            $user->setPassword('$2y$13$tcRfFUVtQCqGV5rcyTpB7OGjcDcmdNQArBNbkGkTtMuABo79I.g2i');
 //            $manager->persist($user);
@@ -27,12 +27,11 @@ class UserFixtures extends Fixture
 //            $manager->flush();
 //        }
 
-
         for ($i = 1; $i <= 1; $i++) {
             $user = new User();
-            $user->setUsername("UserAdmin");
-            $user->setEmail("cyril@glanum.com");
-            $user->setRoles(["ROLE_USER", "ROLE_ADMIN"]);
+            $user->setUsername("Utilisateur");
+            $user->setEmail("utilisateur@glanum.com");
+            $user->setRoles(["ROLE_USER"]);
 //            password : "aaaa"
             $user->setPassword('$2y$13$tcRfFUVtQCqGV5rcyTpB7OGjcDcmdNQArBNbkGkTtMuABo79I.g2i');
             $manager->persist($user);
@@ -40,7 +39,7 @@ class UserFixtures extends Fixture
             $manager->flush();
         }
 
-        for ($i = 3; $i <= 100; $i++) {
+        for ($i = 1; $i <= 500; $i++) {
             $user = new User();
             $user->setUsername("User$i");
             $user->setEmail("email$i@test.com");

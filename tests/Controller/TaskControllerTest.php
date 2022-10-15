@@ -2,14 +2,23 @@
 
 namespace App\Tests\Controller;
 
-use App\Entity\Task;
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
 class TaskControllerTest extends WebTestCase
 {
+    public function getEntity():User
+    {
+        $user = new User();
 
+        $user->setEmail('utilisateur@glanum.com');
+        $user->setUsername('User1');
+        $user->setRoles(["ROLE_USER"]);
+        $user->setPassword('aaaa');
+
+        return $user;
+    }
 
     public function testLoginForTask()
     {
@@ -66,12 +75,14 @@ class TaskControllerTest extends WebTestCase
 
         $form = $crawler->selectButton('Ajouter')->form();
 
+
         $form['task[title]'] = 'Test de titre à rajouter';
         $form['task[content]'] = 'Content de test unitaire';
+        $form['task[author]'] = 21;
 
         $client->submit($form);
 
-//        self::assertResponseStatusCodeSame(Response::HTTP_FOUND);
+        self::assertResponseStatusCodeSame(Response::HTTP_FOUND);
         $client->followRedirect();
 
         self::assertSelectorExists('.alert.alert-success');
@@ -176,7 +187,7 @@ class TaskControllerTest extends WebTestCase
         $crawler = $client->request('GET', '/task_list');
 //        self::assertResponseStatusCodeSame(Response::HTTP_OK);
 
-        $link = $crawler->selectLink('Tâche 2')->link();
+        $link = $crawler->selectLink('Tâche User2')->link();
         //deconnexion
         $crawler = $client->click($link);
 

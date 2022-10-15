@@ -32,7 +32,7 @@ class Task
     private $title;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="tasks")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="tasks", cascade={"persist"})
      * @ORM\JoinColumn(nullable=true)
      */
     private $user;

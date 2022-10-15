@@ -27,8 +27,15 @@ class TaskRepositoryTest extends KernelTestCase
     public function createAndGetTask(): Task
     {
         $em = $this->entityManager;
+
+        $user = new User();
+        $user->setUsername("Userx");
+        $user->setEmail("utilisateurx@glanum.com");
+        $user->setRoles(["ROLE_USER"]);
+        $user->setPassword('$2y$13$tcRfFUVtQCqGV5rcyTpB7OGjcDcmdNQArBNbkGkTtMuABo79I.g2i');
+
         $task = new Task();
-        $task->setAuthor(4);
+        $task->setAuthor($user);
         $task->setTitle('test title');
         $task->setContent('content');
         $task->setCreatedAt(new \DateTimeImmutable('now'));
@@ -37,31 +44,37 @@ class TaskRepositoryTest extends KernelTestCase
         $em->persist($task);
         $em->flush();
 
-        return $em->getRepository(Task::class)->findOneBy(['createdAt' => $task->getCreatedAt()]);
+        return $em->getRepository(Task::class)->findOneBy(['createdAt' => $task->getCreatedAt(), 'user' => $user]);
     }
 
     public function testAddTask()
     {
-        self::bootKernel();
-
         $taskWithTitleJustCreated = $this->createAndGetTask();
 
         $this->assertEquals('test title', $taskWithTitleJustCreated->getTitle());
         $this->assertEquals('content', $taskWithTitleJustCreated->getContent());
-        $this->assertEquals(4, $taskWithTitleJustCreated->getAuthor());
     }
+
+
 
     public function testEditTask()
     {
+
+        $user = new User();
+        $user->setUsername("Userxy");
+        $user->setEmail("utilisateurxy@glanum.com");
+        $user->setRoles(["ROLE_USER"]);
+        $user->setPassword('$2y$13$tcRfFUVtQCqGV5rcyTpB7OGjcDcmdNQArBNbkGkTtMuABo79I.g2i');
+
         self::bootKernel();
         $em = $this->entityManager;
-        $taskDoesnotExist = $em->getRepository(Task::class)->find(6);
+        $taskDoesnotExist = $em->getRepository(Task::class)->find(506);
         $this->assertEquals(null, $taskDoesnotExist);
-        $task = $em->getRepository(Task::class)->find(3545);
+        $task = $em->getRepository(Task::class)->find(1);
         $this->assertInstanceOf(Task::class, $task);
-        $this->assertEquals(4, $task->getAuthor());
+        $this->assertEquals(null, $task->getAuthor());
 
-        $task->setAuthor(6);
+        $task->setAuthor($user);
         $task->setTitle('test new title from task with author 4');
         $task->setContent('New author id 6');
         $task->setCreatedAt(new \DateTimeImmutable('now'));
@@ -74,7 +87,6 @@ class TaskRepositoryTest extends KernelTestCase
 
         $this->assertEquals('test new title from task with author 4', $taskWithTitleJustCreated->getTitle());
         $this->assertEquals('New author id 6', $taskWithTitleJustCreated->getContent());
-        $this->assertEquals(6, $taskWithTitleJustCreated->getAuthor());
     }
 
     public function testRemoveTask()

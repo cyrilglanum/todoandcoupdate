@@ -2,7 +2,7 @@
 
 namespace App\Tests\Entity;
 
-use App\DataFixtures\UserFixtures;
+use App\Tests\DataFixtures\UserFixtures;
 use App\Entity\Task;
 use App\Entity\User;
 use App\Repository\UserRepository;

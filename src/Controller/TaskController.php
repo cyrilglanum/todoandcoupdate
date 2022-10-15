@@ -135,7 +135,7 @@ class TaskController extends AbstractController
      */
     public function deleteTaskAction(Task $id)
     {
-        if ($id->getAuthor() === $this->getUser()->getId() || in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
+        if ($id->getAuthor()->getId() === $this->getUser()->getId() || in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
             $this->taskRepository->remove($id, true);
 
             $this->addFlash('success', 'La tâche a bien été supprimée.');

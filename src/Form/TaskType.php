@@ -22,7 +22,7 @@ class TaskType extends AbstractType
                 ],
                 'mapped' => false,
                 'required' => false,
-                'data' => true
+//                'data' => true
 //                'data' => $options
             ]);
     }
