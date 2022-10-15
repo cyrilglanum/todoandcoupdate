@@ -41,3 +41,9 @@ Enfin pour lancer les tests via php unit, lancez la commande
 
 Cela lancera tous les tests et vous pourrez vérifier le bon déroulement des tests ainsi que le nombre
 de tests et d'assertions données.
+
+Pour le code coverage
+```php vendor/bin/phpunit --coverage-html public/test-coverage``` 
+
+-> Il faut faire attention à avoir une version php > 8.1 pour le code coverage
+

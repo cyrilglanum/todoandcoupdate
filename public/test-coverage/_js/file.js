@@ -1,5 +1,5 @@
   $(function() {
-   let $window     = $(window)
+   var $window     = $(window)
      , $top_link   = $('#toplink')
      , $body       = $('body, html')
      , offset      = $('#code').offset().top
@@ -30,8 +30,8 @@
     .popover({trigger: 'manual'})
     .on({
      'mouseenter.popover': function () {
-      let $target = $(this);
-      let $container = $target.children().first();
+      var $target = $(this);
+      var $container = $target.children().first();
 
       $target.data('popover-hover', true);
 
